@@ -1,0 +1,96 @@
+#:kivy 1.8.0
+
+<SidePanel>:
+    orientation: 'vertical'
+    spacing: 0
+
+    MenuItem:
+        text: 'Namen'
+        height: '50dp'
+        size_hint_y:None
+        background_color:[1,1,1,1]
+
+    MenuItem:
+        text: 'Favoriten'
+        height: '50dp'
+        size_hint_y:None
+
+    MenuItem:
+        text: 'Filter'
+        height: '50dp'
+        size_hint_y:None
+
+    Widget:
+
+
+<AppActionBar>:
+    pos_hint: {'top':1}
+    ActionView:
+        use_separator: True
+        ActionMenu:
+            title: 'Nomen est omen'
+            with_previous: False
+            app_icon: 'atlas://data/images/defaulttheme/splitter_grip'
+            on_press: self.menu()
+        ActionOverflow:
+        ActionQuit:
+            
+
+<MainPanel>:
+    orientation: 'vertical'
+    spacing: 1
+
+    AppActionBar:
+        size_hint: (1., 0.1)
+
+    Label:
+        text: "Main Page"
+
+<FilterView>:
+    orientation: 'vertical'
+    spacing: 1
+
+    AppActionBar:
+        size_hint: (1., 0.1)
+
+    Label:
+        text: "FilterView"
+
+
+<FavoritesView>:
+    orientation: 'vertical'
+    spacing: 1
+
+    AppActionBar:
+        size_hint: (1., 0.1)
+
+    Label:
+        text: 'FavoritesView'
+
+<RatingView>:
+    orientation: 'vertical'
+    spacing: 1
+
+    AppActionBar:
+        size_hint: (1., 0.1)
+
+    Label:
+        text: 'Name'
+        color: [0,1,0,1]
+        background_color: [1,0,0,1]
+        size_hint: (1., 0.1)
+
+    Label:
+        text: 'Herkunft'
+        size_hint: (1., 0.1)
+
+    BoxLayout:
+        size_hint: (1., 0.1)
+        Button:
+            text: "Pro"
+            on_press: root.rate_pro()
+        Button:
+            text: "Con"
+            on_press: root.rate_con()
+
+    Widget:
