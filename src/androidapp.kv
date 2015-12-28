@@ -34,7 +34,7 @@
             on_press: self.menu()
         ActionOverflow:
         ActionQuit:
-            
+
 
 <MainPanel>:
     orientation: 'vertical'
@@ -75,12 +75,14 @@
         size_hint: (1., 0.1)
 
     Label:
-        text: 'Name'
+        id: 'name'
+        text: root.name_value
         color: [0,1,0,1]
         background_color: [1,0,0,1]
         size_hint: (1., 0.1)
 
     Label:
+        id: 'origin'
         text: 'Herkunft'
         size_hint: (1., 0.1)
 

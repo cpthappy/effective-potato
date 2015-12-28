@@ -1,19 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-#
-#-------------------------------------------------------------------------------
-# Name:        androidApp.py
-# Purpose:     Simple example of a android application skeleton that manages
-#              application menu using ActionBar and SidePanelMenu that slides
-#              over the main panel
-#
-# Author:      Licia Leanza
-#
-# Created:     13-04-2014
-# Copyright:   (c) Licia Leanza: 2014
-# Licence:     GPL v2
-#-------------------------------------------------------------------------------
 
-__author__ = 'licia'
+__author__ = 'Georg Vogelhuber'
 
 #--------------------------------------------------------------------------
 '''dictionary that contains the correspondance between items descriptions
@@ -38,9 +26,9 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.button import Button
 from kivy.uix.actionbar import ActionBar, ActionButton, ActionPrevious
-from kivy.properties import  ObjectProperty
+from kivy.properties import  ObjectProperty, StringProperty
 
-from NameStore import NameStore
+from NameProvider import NameProvider
 
 RootApp = None
 
@@ -85,15 +73,29 @@ class AppArea(FloatLayout):
     pass
 
 class RatingView(BoxLayout):
+    name_value = StringProperty()
+
     def __init__(self, **kwargs):
         super(RatingView, self).__init__( **kwargs)
-        self.name_store = NameStore()
+
+        self.name_provider = NameProvider()
+        self.current_name = None
+
+        self.update_current_name()
+
+    def update_current_name(self):
+        self.current_name = self.name_provider.get_next_unrated_name()
+        self.name_value = self.current_name[1]
 
     def rate_pro(self):
         print "PRO"
 
+        self.update_current_name()
+
     def rate_con(self):
         print "CON"
+
+        self.update_current_name()
 
 class FavoritesView(BoxLayout):
     pass
