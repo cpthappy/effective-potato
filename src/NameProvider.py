@@ -10,7 +10,6 @@ class NameProvider(object):
         self.name_store = NameStore()
 
     def get_next_unrated_name(self):
-        self.config_store.refresh()
 
         name_data = self.name_store.get_unrated_entries()
 

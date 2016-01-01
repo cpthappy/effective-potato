@@ -85,7 +85,7 @@ class RatingView(BoxLayout):
 
     def update_current_name(self):
         self.current_name = self.name_provider.get_next_unrated_name()
-        self.name_value = self.current_name[1]
+        self.name_value = self.current_name[0]
 
     def rate_pro(self):
         print "PRO"
