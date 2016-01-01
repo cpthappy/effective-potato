@@ -77,13 +77,13 @@
     Label:
         id: 'name'
         text: root.name_value
-        color: [0,1,0,1]
+        color: root.gender_color
         background_color: [1,0,0,1]
         size_hint: (1., 0.1)
 
     Label:
         id: 'origin'
-        text: 'Herkunft'
+        text: root.name_origin
         size_hint: (1., 0.1)
 
     BoxLayout:

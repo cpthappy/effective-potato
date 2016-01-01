@@ -26,7 +26,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.button import Button
 from kivy.uix.actionbar import ActionBar, ActionButton, ActionPrevious
-from kivy.properties import  ObjectProperty, StringProperty
+from kivy.properties import  ObjectProperty, StringProperty, ListProperty
 
 from NameProvider import NameProvider
 
@@ -74,6 +74,8 @@ class AppArea(FloatLayout):
 
 class RatingView(BoxLayout):
     name_value = StringProperty()
+    name_origin = StringProperty()
+    gender_color = ListProperty([0,1,0,1])
 
     def __init__(self, **kwargs):
         super(RatingView, self).__init__( **kwargs)
@@ -86,6 +88,12 @@ class RatingView(BoxLayout):
     def update_current_name(self):
         self.current_name = self.name_provider.get_next_unrated_name()
         self.name_value = self.current_name[0]
+        self.name_origin = self.current_name[1]["region"]
+
+        if self.current_name[1]["gender"] == "m":
+            self.gender_color = [0,0,1,1]
+        else:
+            self.gender_color = [1,0,.75,1]
 
     def rate_pro(self):
         print "PRO"
