@@ -1,7 +1,7 @@
 import csv
 from kivy.storage.jsonstore import JsonStore
 
-store = JsonStore("names.json")
+store = JsonStore("src/names.json")
 
 with open("names_tab.csv", "r") as f:
     reader = csv.DictReader(f)

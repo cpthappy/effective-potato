@@ -1,6 +1,4 @@
-#:kivy 1.9.0
-#:import label kivy.uix.label
-#:import ListAdapter kivy.adapters.listadapter.ListAdapter
+#:kivy 1.8.0
 
 <SidePanel>:
     orientation: 'vertical'
@@ -64,13 +62,11 @@
     spacing: 1
 
     AppActionBar:
+        size_hint: (1., 0.1)
 
     ListView:
-        id: favorite_list
-        adapter:
-            ListAdapter(
-            data=root.favorite_names,
-            cls=label.Label)
+        size_hint: (1., 0.1)
+        adapter: ListAdapter(data=[], cls=ListItemButton)
 
     Widget:
 

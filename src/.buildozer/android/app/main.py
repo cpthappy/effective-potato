@@ -105,18 +105,21 @@ class RatingView(BoxLayout):
         self.update_current_name()
 
 class FavoritesView(BoxLayout):
-    favorite_names = ListProperty()
-
     def __init__(self, **kwargs):
         super(FavoritesView, self).__init__( **kwargs)
-        self.name_provider = NameProvider(callback=self.update)
-        self.favorite_names = self.name_provider.get_favorites()
+        self.displayed_names = []
+        self.name_provider = NameProvider()
 
-    def update(self):
-        self.favorite_names = self.name_provider.get_favorites()
-        self.ids.favorite_list.data = self.favorite_names
-        self.ids.favorite_list.populate()
-
+    def update_content(self):
+        favs = self.name_provider.get_favorites()
+        for name in favs:
+            if name not in self.displayed_names:
+                print name
+                try:
+                    self.ids.FavoritesBoxLayout.add_widget(Label(text=name))
+                    self.displayed_names.append(name)
+                except:
+                    pass
 
 class FilterView(BoxLayout):
     pass
