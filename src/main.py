@@ -96,12 +96,12 @@ class RatingView(BoxLayout):
             self.gender_color = [1,0,.75,1]
 
     def rate_pro(self):
-        print "PRO"
+        self.name_provider.rate(self.current_name, 1)
 
         self.update_current_name()
 
     def rate_con(self):
-        print "CON"
+        self.name_provider.rate(self.current_name, 0)
 
         self.update_current_name()
 

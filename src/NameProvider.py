@@ -15,6 +15,10 @@ class NameProvider(object):
 
         return random.choice(name_data)
 
+    def rate(self, current_name, rating):
+        self.name_store.set_rating(current_name, rating)
+
+
 if __name__ == '__main__':
     name_prov = NameProvider()
 

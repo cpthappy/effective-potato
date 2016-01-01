@@ -19,6 +19,10 @@ class NameStore(object):
                 unrated.append((name, data))
         return unrated
 
+    def set_rating(self, current_name, rating_value):
+        self.store.put(current_name[0], rating=rating_value)
+
+
 if __name__ == "__main__":
     name_store = NameStore()
     print name_store.get_unrated_entries()
