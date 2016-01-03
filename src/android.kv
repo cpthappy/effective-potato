@@ -1,0 +1,80 @@
+#:kivy 1.9.0
+#:import label kivy.uix.label
+#:import ListAdapter kivy.adapters.listadapter.ListAdapter
+
+<MenuBar@BoxLayout>:
+    orientation: 'horizontal'
+    spacing: 1
+
+    Button:
+        text: 'Namen'
+        on_release:  app.root.current = 'rating'
+
+    Button:
+        text: 'Favoriten'
+        on_release:  app.root.current = 'favs'
+
+    Button:
+        text: 'Filter'
+        on_release:  app.root.current = 'filter'
+
+
+<FilterView>:
+    name: 'filter'
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 1
+
+        Label:
+            text: "FilterView"
+
+        MenuBar:
+
+
+<FavoritesView>:
+    name: 'favs'
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 1
+
+        ListView:
+            id: favorite_list
+            adapter:
+                ListAdapter(
+                data=root.favorite_names,
+                cls=label.Label)
+        MenuBar:
+
+<RatingView>:
+    name:  'rating'
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 1
+
+        Label:
+            id: 'name'
+            text: root.name_value
+            color: root.gender_color
+            background_color: [1,0,0,1]
+            size_hint: (1., 0.1)
+
+        Label:
+            id: 'origin'
+            text: root.name_origin
+            size_hint: (1., 0.1)
+
+        BoxLayout:
+            size_hint: (1., 0.1)
+            Button:
+                text: "Pro"
+                on_press: root.rate_pro()
+            Button:
+                text: "Con"
+                on_press: root.rate_con()
+
+        MenuBar:
+
+ScreenManagement:
+    RatingView:
+    FavoritesView:
+    FilterView:
