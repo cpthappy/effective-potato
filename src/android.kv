@@ -1,23 +1,25 @@
 #:kivy 1.9.0
 #:import label kivy.uix.label
 #:import ListAdapter kivy.adapters.listadapter.ListAdapter
+#: import sm kivy.uix.screenmanager
 
-<MenuBar@BoxLayout>:
-    orientation: 'horizontal'
-    spacing: 1
-
-    Button:
-        text: 'Namen'
-        on_release:  app.root.current = 'rating'
-
-    Button:
-        text: 'Favoriten'
-        on_release:  app.root.current = 'favs'
-
-    Button:
-        text: 'Filter'
-        on_release:  app.root.current = 'filter'
-
+<MenuBar@ActionBar>:
+    pos_hint: {'top':1}
+    ActionView:
+        use_separator: True
+        ActionPrevious:
+            title: 'Nomen est omen'
+            with_previous: False
+        ActionOverflow:
+        ActionButton:
+            text: 'Namen'
+            on_release:  app.root.current = 'rating'
+        ActionButton:
+            text: 'Favoriten'
+            on_release:  app.root.current = 'favs'
+        ActionButton:
+            text: 'Filter'
+            on_release:  app.root.current = 'filter'
 
 <FilterView>:
     name: 'filter'
@@ -25,10 +27,9 @@
         orientation: 'vertical'
         spacing: 1
 
+        MenuBar:
         Label:
             text: "FilterView"
-
-        MenuBar:
 
 
 <FavoritesView>:
@@ -37,19 +38,21 @@
         orientation: 'vertical'
         spacing: 1
 
+        MenuBar:
         ListView:
             id: favorite_list
             adapter:
                 ListAdapter(
                 data=root.favorite_names,
                 cls=label.Label)
-        MenuBar:
+
 
 <RatingView>:
     name:  'rating'
     BoxLayout:
         orientation: 'vertical'
         spacing: 1
+        MenuBar:
 
         Label:
             id: 'name'
@@ -72,9 +75,10 @@
                 text: "Con"
                 on_press: root.rate_con()
 
-        MenuBar:
+
 
 ScreenManagement:
+    transition: sm.NoTransition()
     RatingView:
     FavoritesView:
     FilterView:
