@@ -5,6 +5,7 @@
 
 <MenuBar@ActionBar>:
     pos_hint: {'top':1}
+    background_color: (0,.75,.25,.5)
     ActionView:
         use_separator: True
         ActionPrevious:
@@ -57,6 +58,7 @@
         Label:
             id: 'name'
             text: root.name_value
+            font_size: '50sp'
             color: root.gender_color
             background_color: [1,0,0,1]
             size_hint: (1., 0.1)
@@ -65,9 +67,11 @@
             id: 'origin'
             text: root.name_origin
             size_hint: (1., 0.1)
+            color: (0,0,0,1)
 
         BoxLayout:
             size_hint: (1., 0.1)
+            spacing: 10
             Button:
                 text: "Pro"
                 on_press: root.rate_pro()
