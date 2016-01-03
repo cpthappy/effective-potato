@@ -73,11 +73,21 @@
             size_hint: (1., 0.1)
             spacing: 10
             Button:
-                text: "Pro"
                 on_press: root.rate_pro()
+                background_color: [1,1,1,1]
+                Image:
+                    source: 'res/ok-circle.png'
+                    center_x: self.parent.center_x
+                    center_y: self.parent.center_y
+
             Button:
-                text: "Con"
                 on_press: root.rate_con()
+                background_color: [1,1,1,1]
+                Image:
+                    source: 'res/remove-circle.png'
+                    center_x: self.parent.center_x
+                    center_y: self.parent.center_y
+
 
 
 
