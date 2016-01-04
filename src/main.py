@@ -70,6 +70,18 @@ class FavoritesView(Screen):
         super(FavoritesView, self).__init__(**kwargs)
         self.favorite_names = name_provider.get_favorites()
 
+    def update(self):
+        print "Fav update"
+        self.favorite_names = name_provider.get_favorites()
+        print self.favorite_names
+        self.ids.favorite_list.populate()
+
+
+    def args_converter(self, row_index, an_obj):
+        return {'text': an_obj,
+                'size_hint_y': None,
+                'height': 25}
+
 class FilterView(Screen):
     pass
 
