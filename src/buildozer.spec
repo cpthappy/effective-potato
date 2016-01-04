@@ -46,7 +46,7 @@ requirements = kivy
 #presplash.filename = %(source.dir)s/data/presplash.png
 
 # (str) Icon of the application
-#icon.filename = %(source.dir)s/data/icon.png
+icon.filename = %(source.dir)s/res/logo.png
 
 # (str) Supported orientation (one of landscape, portrait or all)
 orientation = portrait
@@ -151,7 +151,7 @@ android.private_storage = True
 [buildozer]
 
 # (int) Log level (0 = error only, 1 = info, 2 = debug (with command output))
-log_level = 2
+log_level = 1
 
 # (int) Display warning if buildozer is run as root (0 = False, 1 = True)
 warn_on_root = 1

@@ -12,6 +12,10 @@ from kivy.uix.button import Button
 from kivy.properties import StringProperty, ListProperty
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import ScreenManager, Screen
+
+from kivy.core.window import Window
+from kivy.utils import get_color_from_hex
+
 from NameProvider import NameProvider
 
 class RatingView(Screen):
@@ -66,6 +70,8 @@ class FilterView(Screen):
 class ScreenManagement(ScreenManager):
     pass
 
+
+Window.clearcolor = get_color_from_hex('#ffffff')
 presentation = Builder.load_file("android.kv")
 
 class AndroidApp(App):

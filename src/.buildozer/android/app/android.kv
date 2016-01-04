@@ -1,23 +1,26 @@
 #:kivy 1.9.0
 #:import label kivy.uix.label
 #:import ListAdapter kivy.adapters.listadapter.ListAdapter
+#: import sm kivy.uix.screenmanager
 
-<MenuBar@BoxLayout>:
-    orientation: 'horizontal'
-    spacing: 1
-
-    Button:
-        text: 'Namen'
-        on_release:  app.root.current = 'rating'
-
-    Button:
-        text: 'Favoriten'
-        on_release:  app.root.current = 'favs'
-
-    Button:
-        text: 'Filter'
-        on_release:  app.root.current = 'filter'
-
+<MenuBar@ActionBar>:
+    pos_hint: {'top':1}
+    background_color: (0,.75,.25,.5)
+    ActionView:
+        use_separator: True
+        ActionPrevious:
+            title: 'Nomen est omen'
+            with_previous: False
+        ActionOverflow:
+        ActionButton:
+            text: 'Namen'
+            on_release:  app.root.current = 'rating'
+        ActionButton:
+            text: 'Favoriten'
+            on_release:  app.root.current = 'favs'
+        ActionButton:
+            text: 'Filter'
+            on_release:  app.root.current = 'filter'
 
 <FilterView>:
     name: 'filter'
@@ -25,10 +28,9 @@
         orientation: 'vertical'
         spacing: 1
 
+        MenuBar:
         Label:
             text: "FilterView"
-
-        MenuBar:
 
 
 <FavoritesView>:
@@ -37,23 +39,26 @@
         orientation: 'vertical'
         spacing: 1
 
+        MenuBar:
         ListView:
             id: favorite_list
             adapter:
                 ListAdapter(
                 data=root.favorite_names,
                 cls=label.Label)
-        MenuBar:
+
 
 <RatingView>:
     name:  'rating'
     BoxLayout:
         orientation: 'vertical'
         spacing: 1
+        MenuBar:
 
         Label:
             id: 'name'
             text: root.name_value
+            font_size: '50sp'
             color: root.gender_color
             background_color: [1,0,0,1]
             size_hint: (1., 0.1)
@@ -62,19 +67,32 @@
             id: 'origin'
             text: root.name_origin
             size_hint: (1., 0.1)
+            color: (0,0,0,1)
 
         BoxLayout:
             size_hint: (1., 0.1)
+            spacing: 10
             Button:
-                text: "Pro"
                 on_press: root.rate_pro()
-            Button:
-                text: "Con"
-                on_press: root.rate_con()
+                background_color: [1,1,1,1]
+                Image:
+                    source: 'res/ok-circle.png'
+                    center_x: self.parent.center_x
+                    center_y: self.parent.center_y
 
-        MenuBar:
+            Button:
+                on_press: root.rate_con()
+                background_color: [1,1,1,1]
+                Image:
+                    source: 'res/remove-circle.png'
+                    center_x: self.parent.center_x
+                    center_y: self.parent.center_y
+
+
+
 
 ScreenManagement:
+    transition: sm.NoTransition()
     RatingView:
     FavoritesView:
     FilterView:
