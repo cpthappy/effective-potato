@@ -5,13 +5,14 @@
 
 <MenuBar@ActionBar>:
     pos_hint: {'top':1}
-    background_color: (0,.75,.25,.5)
+    background_normal: ""
     previous_image: 'res/logo.png'
     ActionView:
         use_separator: True
         ActionPrevious:
             title: 'Nomen est omen'
             with_previous: False
+            app_icon: 'res/logo.png'
         ActionOverflow:
         ActionButton:
             #text: 'Namen'
@@ -77,6 +78,7 @@
             size_hint: (1., 0.1)
             spacing: 10
             Button:
+                #name: rate_pro_btn
                 on_press: root.rate_pro()
                 background_color: [1,1,1,1]
                 background_normal: ""
@@ -87,6 +89,7 @@
                     center_y: self.parent.center_y
 
             Button:
+                #name: rate_con_btn
                 on_press: root.rate_con()
                 background_color: [1,1,1,1]
                 background_normal: ""

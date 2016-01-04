@@ -6,6 +6,7 @@
 <MenuBar@ActionBar>:
     pos_hint: {'top':1}
     background_color: (0,.75,.25,.5)
+    previous_image: 'res/logo.png'
     ActionView:
         use_separator: True
         ActionPrevious:
@@ -13,13 +14,16 @@
             with_previous: False
         ActionOverflow:
         ActionButton:
-            text: 'Namen'
+            #text: 'Namen'
+            icon: 'res/add_favs.png'
             on_release:  app.root.current = 'rating'
         ActionButton:
-            text: 'Favoriten'
+            #text: 'Favoriten'
+            icon: 'res/like.png'
             on_release:  app.root.current = 'favs'
         ActionButton:
-            text: 'Filter'
+            #text: 'Filter'
+            icon: 'res/settings.png'
             on_release:  app.root.current = 'filter'
 
 <FilterView>:
@@ -73,18 +77,24 @@
             size_hint: (1., 0.1)
             spacing: 10
             Button:
+                id: rate_pro_btn
                 on_press: root.rate_pro()
                 background_color: [1,1,1,1]
+                background_normal: ""
+                background_down: ""
                 Image:
-                    source: 'res/ok-circle.png'
+                    source: 'res/up.png'
                     center_x: self.parent.center_x
                     center_y: self.parent.center_y
 
             Button:
+                id: rate_con_btn
                 on_press: root.rate_con()
                 background_color: [1,1,1,1]
+                background_normal: ""
+                background_down: ""
                 Image:
-                    source: 'res/remove-circle.png'
+                    source: 'res/down.png'
                     center_x: self.parent.center_x
                     center_y: self.parent.center_y
 
