@@ -31,13 +31,19 @@ class RatingView(Screen):
 
     def update_current_name(self):
         self.current_name = name_provider.get_next_unrated_name()
-        self.name_value = self.current_name[0]
-        self.name_origin = self.current_name[1]["region"]
 
-        if self.current_name[1]["gender"] == "m":
-            self.gender_color = [0, 0, 1, 1]
+        if self.current_name:
+            self.name_value = self.current_name[0]
+            self.name_origin = self.current_name[1]["region"]
+
+            if self.current_name[1]["gender"] == "m":
+                self.gender_color = [0, 0, 1, 1]
+            else:
+                self.gender_color = [1, 0, .75, 1]
         else:
-            self.gender_color = [1, 0, .75, 1]
+            self.name_value = "Keine weiteren Namen"
+            self.gender_color = [0.5, 0.5, 0.5, 0.5]
+            self.name_origin = ""
 
     def rate_pro(self):
         name_provider.rate(self.current_name, 1)
