@@ -26,7 +26,6 @@ class RatingView(Screen):
     def __init__(self, **kwargs):
         super(RatingView, self).__init__(**kwargs)
         self.current_name = None
-
         self.update_current_name()
 
     def update_current_name(self):
@@ -75,9 +74,19 @@ class FavoritesView(Screen):
         self.ids.favorite_list.populate()
 
     def args_converter(self, row_index, an_obj):
-        return {'text': an_obj,
+        print an_obj
+        if an_obj[1]["gender"] == "m":
+            box_color = [0, 0, 1, 1]
+        else:
+            box_color = [1, 0, .75, 1]
+        return {'text': an_obj[0],
                 'size_hint_y': None,
-                'height': 25}
+                'font_size': '30sp',
+                'height': 50,
+                'color': box_color,
+                'deselected_color': [1,1,1,1],
+                'selected_color': [0.5, 0.5, 0.5, 0.5],
+                'background_normal': ""}
 
 class FilterView(Screen):
     pass

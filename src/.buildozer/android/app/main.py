@@ -33,8 +33,8 @@ class RatingView(Screen):
         self.current_name = name_provider.get_next_unrated_name()
 
         if self.current_name:
-            self.ids.rate_pro_btn.enabled = True
-            self.ids.rate_con_btn.enabled = True
+            #self.rate_pro_btn.enabled = True
+            #self.rate_con_btn.enabled = True
             self.name_value = self.current_name[0]
             self.name_origin = self.current_name[1]["region"]
 
@@ -43,21 +43,25 @@ class RatingView(Screen):
             else:
                 self.gender_color = [1, 0, .75, 1]
         else:
-            self.ids.rate_pro_btn.enabled = False
-            self.ids.rate_con_btn.enabled = False
+            #self.rate_pro_btn.enabled = False
+            #self.rate_con_btn.enabled = False
             self.name_value = "Keine weiteren\nNamen"
             self.gender_color = [0.5, 0.5, 0.5, 0.5]
             self.name_origin = "Zur Anzeige weiterer Namen\nFilter oder Bewertungen\nlöschen."
 
     def rate_pro(self):
-        name_provider.rate(self.current_name, 1)
-
-        self.update_current_name()
+        try:
+            name_provider.rate(self.current_name, 1)
+            self.update_current_name()
+        except TypeError:
+            pass
 
     def rate_con(self):
-        name_provider.rate(self.current_name, 0)
-
-        self.update_current_name()
+        try:
+            name_provider.rate(self.current_name, 0)
+            self.update_current_name()
+        except TypeError:
+            pass
 
 class FavoritesView(Screen):
     favorite_names = ListProperty()
@@ -65,6 +69,15 @@ class FavoritesView(Screen):
     def __init__(self, **kwargs):
         super(FavoritesView, self).__init__(**kwargs)
         self.favorite_names = name_provider.get_favorites()
+
+    def update(self):
+        self.favorite_names = name_provider.get_favorites()
+        self.ids.favorite_list.populate()
+
+    def args_converter(self, row_index, an_obj):
+        return {'text': an_obj,
+                'size_hint_y': None,
+                'height': 25}
 
 class FilterView(Screen):
     pass

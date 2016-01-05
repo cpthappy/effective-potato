@@ -1,17 +1,19 @@
 #:kivy 1.9.0
 #:import label kivy.uix.label
 #:import ListAdapter kivy.adapters.listadapter.ListAdapter
-#: import sm kivy.uix.screenmanager
+#:import ListItemButton kivy.uix.listview.ListItemButton
+#:import sm kivy.uix.screenmanager
 
 <MenuBar@ActionBar>:
     pos_hint: {'top':1}
-    background_color: (0,.75,.25,.5)
+    background_normal: ""
     previous_image: 'res/logo.png'
     ActionView:
         use_separator: True
         ActionPrevious:
             title: 'Nomen est omen'
             with_previous: False
+            app_icon: 'res/logo.png'
         ActionOverflow:
         ActionButton:
             #text: 'Namen'
@@ -39,6 +41,7 @@
 
 <FavoritesView>:
     name: 'favs'
+    on_enter: self.update()
     BoxLayout:
         orientation: 'vertical'
         spacing: 1
@@ -48,8 +51,9 @@
             id: favorite_list
             adapter:
                 ListAdapter(
+                args_converter=root.args_converter,
                 data=root.favorite_names,
-                cls=label.Label)
+                cls=ListItemButton)
 
 
 <RatingView>:
@@ -77,7 +81,7 @@
             size_hint: (1., 0.1)
             spacing: 10
             Button:
-                id: rate_pro_btn
+                #name: rate_pro_btn
                 on_press: root.rate_pro()
                 background_color: [1,1,1,1]
                 background_normal: ""
@@ -88,7 +92,7 @@
                     center_y: self.parent.center_y
 
             Button:
-                id: rate_con_btn
+                #name: rate_con_btn
                 on_press: root.rate_con()
                 background_color: [1,1,1,1]
                 background_normal: ""

@@ -21,7 +21,7 @@ class NameProvider(object):
         self.name_store.set_rating(current_name, rating)
 
     def get_favorites(self):
-        return sorted([x[0] for x in self.name_store.get_favorites()])
+        return sorted(self.name_store.get_favorites())
 
 
 if __name__ == '__main__':
