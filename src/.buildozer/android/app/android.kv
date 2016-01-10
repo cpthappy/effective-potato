@@ -53,7 +53,24 @@
                 ListAdapter(
                 args_converter=root.args_converter,
                 data=root.favorite_names,
+                selection_mode='single',
                 cls=ListItemButton)
+        BoxLayout:
+            size_hint_y: 0.25
+            orientation: 'horizontal'
+            Button:
+                background_normal: ""
+                Image:
+                    source: 'res/info.png'
+                    center_x: self.parent.center_x
+                    center_y: self.parent.center_y
+            Button:
+                background_normal: ""
+                Image:
+                    source: 'res/delete.png'
+                    center_x: self.parent.center_x
+                    center_y: self.parent.center_y
+
 
 
 <RatingView>:
@@ -101,9 +118,6 @@
                     source: 'res/down.png'
                     center_x: self.parent.center_x
                     center_y: self.parent.center_y
-
-
-
 
 ScreenManagement:
     transition: sm.NoTransition()
