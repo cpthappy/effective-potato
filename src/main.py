@@ -17,6 +17,7 @@ from kivy.core.window import Window
 from kivy.utils import get_color_from_hex
 
 from NameProvider import NameProvider
+from ConfigStore import ConfigStore
 
 class RatingView(Screen):
     name_value = StringProperty()
@@ -71,7 +72,7 @@ class FavoritesView(Screen):
 
     def update(self):
         self.favorite_names = name_provider.get_favorites()
-        self.ids.favorite_list.populate()
+        self.ids.favorite_list._trigger_reset_populate()
 
     def args_converter(self, row_index, an_obj):
         print an_obj
@@ -96,6 +97,7 @@ class ScreenManagement(ScreenManager):
 
 
 name_provider = NameProvider()
+config_store = ConfigStore()
 Window.clearcolor = get_color_from_hex('#ffffff')
 presentation = Builder.load_file("android.kv")
 
