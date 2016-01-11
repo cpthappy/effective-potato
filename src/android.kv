@@ -17,49 +17,18 @@
             app_icon: 'res/logo.png'
         ActionOverflow:
             ActionButton:
-                text: 'Namen'
-                icon: 'res/add_favs.png'
+                markup: True # Always turn markup on
+                text: "%s Namen entdecken"%(icon('flaticon-baby29'))
                 on_release:  app.root.current = 'rating'
             ActionButton:
-                text: 'Favoriten'
-                icon: 'res/like.png'
+                markup: True # Always turn markup on
+                text: "%s Favoriten"%(icon('flaticon-loving34'))
                 on_release:  app.root.current = 'favs'
-            #ActionButton:
-            #    #text: 'Filter'
-            #    icon: 'res/settings.png'
-            #    on_release:  app.root.current = 'filter'
+            ActionButton:
+                markup: True # Always turn markup on
+                text: "%s Einstellungen"%(icon('flaticon-settings48'))
+                on_release:  app.open_settings()
 
-<FilterView>:
-    name: 'filter'
-    BoxLayout:
-        orientation: 'vertical'
-        spacing: 1
-
-        MenuBar:
-        BoxLayout:
-            orientation: 'horizontal'
-            Label:
-                text: "Geschlecht"
-            TextInput:
-                id: gender_filter_input
-        BoxLayout:
-            orientation: 'horizontal'
-            Label:
-                text: "Geschlecht"
-            TextInput:
-                id: gender_filter_input
-        BoxLayout:
-            orientation: 'horizontal'
-            Label:
-                text: "Geschlecht"
-            TextInput:
-                id: gender_filter_input
-        BoxLayout:
-            orientation: 'horizontal'
-            Label:
-                text: "Geschlecht"
-            TextInput:
-                id: gender_filter_input
 <FavoritesView>:
     name: 'favs'
     on_enter: self.update()
@@ -120,7 +89,6 @@
             size_hint: (1., 0.1)
             spacing: 10
             Button:
-                #name: rate_pro_btn
                 on_press: root.rate_pro()
                 background_color: [1,1,1,1]
                 background_normal: ""
@@ -131,7 +99,16 @@
                 text: "%s"%(icon('flaticon-round68'))
 
             Button:
-                #name: rate_con_btn
+                on_press: root.update_current_name()
+                background_color: [1,1,1,1]
+                background_normal: ""
+                background_down: ""
+                color: [0.5,0.5,0.5,1]
+                font_size: '100dp'
+                markup: True # Always turn markup on
+                text: "%s"%(icon('flaticon-round67'))
+
+            Button:
                 on_press: root.rate_con()
                 background_color: [1,1,1,1]
                 color: [1,0,0,1]
@@ -145,4 +122,3 @@ ScreenManagement:
     transition: sm.NoTransition()
     RatingView:
     FavoritesView:
-    #FilterView:

@@ -13,7 +13,7 @@ package.domain = de.jgv
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpg,kv,atlas,json
+source.include_exts = py,png,jpg,kv,atlas,json,ttf,fontd
 
 # (list) Source files to exclude (let empty to not exclude anything)
 #source.exclude_exts = spec
