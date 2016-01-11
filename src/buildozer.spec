@@ -40,7 +40,7 @@ requirements = kivy
 # requirements.source.kivy = ../../kivy
 
 # (list) Garden requirements
-#garden_requirements =
+garden_requirements = iconfonts
 
 # (str) Presplash of the application
 #presplash.filename = %(source.dir)s/data/presplash.png

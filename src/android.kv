@@ -3,6 +3,7 @@
 #:import ListAdapter kivy.adapters.listadapter.ListAdapter
 #:import ListItemButton kivy.uix.listview.ListItemButton
 #:import sm kivy.uix.screenmanager
+#: import icon kivy.garden.iconfonts.icon
 
 <MenuBar@ActionBar>:
     pos_hint: {'top':1}
@@ -15,18 +16,18 @@
             with_previous: False
             app_icon: 'res/logo.png'
         ActionOverflow:
-        ActionButton:
-            #text: 'Namen'
-            icon: 'res/add_favs.png'
-            on_release:  app.root.current = 'rating'
-        ActionButton:
-            #text: 'Favoriten'
-            icon: 'res/like.png'
-            on_release:  app.root.current = 'favs'
-        ActionButton:
-            #text: 'Filter'
-            icon: 'res/settings.png'
-            on_release:  app.root.current = 'filter'
+            ActionButton:
+                text: 'Namen'
+                icon: 'res/add_favs.png'
+                on_release:  app.root.current = 'rating'
+            ActionButton:
+                text: 'Favoriten'
+                icon: 'res/like.png'
+                on_release:  app.root.current = 'favs'
+            #ActionButton:
+            #    #text: 'Filter'
+            #    icon: 'res/settings.png'
+            #    on_release:  app.root.current = 'filter'
 
 <FilterView>:
     name: 'filter'
@@ -95,6 +96,7 @@
 
 <RatingView>:
     name:  'rating'
+    on_enter: self.update_current_name()
     BoxLayout:
         orientation: 'vertical'
         spacing: 1
@@ -123,24 +125,24 @@
                 background_color: [1,1,1,1]
                 background_normal: ""
                 background_down: ""
-                Image:
-                    source: 'res/up.png'
-                    center_x: self.parent.center_x
-                    center_y: self.parent.center_y
+                color: [0,1,0,1]
+                font_size: '100dp'
+                markup: True # Always turn markup on
+                text: "%s"%(icon('flaticon-round68'))
 
             Button:
                 #name: rate_con_btn
                 on_press: root.rate_con()
                 background_color: [1,1,1,1]
+                color: [1,0,0,1]
+                font_size: '100dp'
                 background_normal: ""
                 background_down: ""
-                Image:
-                    source: 'res/down.png'
-                    center_x: self.parent.center_x
-                    center_y: self.parent.center_y
+                markup: True # Always turn markup on
+                text: "%s"%(icon('flaticon-close6'))
 
 ScreenManagement:
     transition: sm.NoTransition()
     RatingView:
     FavoritesView:
-    FilterView:
+    #FilterView:
