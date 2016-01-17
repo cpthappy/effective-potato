@@ -32,36 +32,39 @@ margin-left: 20px;
 .flaticon-delete96:before {
 	content: "\e005";
 }
-.flaticon-favorites4:before {
+.flaticon-direction344:before {
 	content: "\e006";
 }
-.flaticon-heart292:before {
+.flaticon-favorites4:before {
 	content: "\e007";
 }
-.flaticon-loving34:before {
+.flaticon-heart292:before {
 	content: "\e008";
 }
-.flaticon-magnifying-glass34:before {
+.flaticon-loving34:before {
 	content: "\e009";
 }
-.flaticon-round67:before {
+.flaticon-magnifying-glass34:before {
 	content: "\e00a";
 }
-.flaticon-round68:before {
+.flaticon-round67:before {
 	content: "\e00b";
 }
-.flaticon-search96:before {
+.flaticon-round68:before {
 	content: "\e00c";
 }
-.flaticon-settings48:before {
+.flaticon-search96:before {
 	content: "\e00d";
 }
-.flaticon-stars64:before {
+.flaticon-settings48:before {
 	content: "\e00e";
 }
-.flaticon-verification23:before {
+.flaticon-stars64:before {
 	content: "\e00f";
 }
-.flaticon-warning36:before {
+.flaticon-verification23:before {
 	content: "\e010";
+}
+.flaticon-warning36:before {
+	content: "\e011";
 }

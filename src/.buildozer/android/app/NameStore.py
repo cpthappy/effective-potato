@@ -28,7 +28,7 @@ class NameStore(object):
         return favs
 
     def set_rating(self, current_name, rating_value):
-        self.store.put(current_name[0], rating=rating_value)
+        self.store.put(current_name[0], rating=rating_value, **current_name[1])
 
 
 if __name__ == "__main__":
