@@ -24,9 +24,26 @@ with codecs.open("data.txt", "w", "utf-8") as o:
             else:
                 for table in soup.findAll('table', attrs={"class":"text", "width": "100%"}):
                     rows = table.findAll('tr')
+
                     if rows[0].find('td', attrs={'colspan': "2"}):
                         name = rows[0].find('td', attrs={'colspan': "2"}).text
-                        origin = rows[1].findAll('td')[1].text
-                        gender = rows[2].findAll('td')[1].text
-                        meaning = rows[3].findAll('td')[1].text
-                        print >>od, '\t'.join((name, origin, gender, meaning))
+                        gender = "-"
+                        origin = "-"
+                        words = "-"
+                        language = "-"
+                        meaning = "-"
+                        for x in rows[1:]:
+                            col1 = x.findAll('td')[0].text
+                            col2 = x.findAll('td')[1].text
+
+                            if "Herkunftssprache" in col1:
+                                language = col2
+                            elif "Herkunft" in col1:
+                                origin = col2
+                            elif "rter:" in col1:
+                                words = col2
+                            elif "Geschlecht" in col1:
+                                gender = col2
+                            elif "Bedeutung" in col1:
+                                meaning = col2
+                        print >>od, '\t'.join((name, origin, gender, meaning, words, language))
