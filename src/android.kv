@@ -85,6 +85,23 @@
             size_hint: (1., 0.1)
             color: (0,0,0,1)
 
+        Label:
+            size_hint_y: None
+            text_size: self.width, None
+            height: self.texture_size[1]
+            id: 'info'
+            text: root.name_info
+            #size_hint: (1., 0.1)
+            color: (0,0,0,1)
+            halign: 'center'
+            valign: 'middle'
+
+        Label:
+            id: 'variants'
+            text: root.name_variants
+            size_hint: (1., 0.1)
+            color: (0,0,0,1)
+
         BoxLayout:
             size_hint: (1., 0.1)
             spacing: 10
