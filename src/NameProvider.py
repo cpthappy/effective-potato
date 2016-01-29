@@ -9,6 +9,9 @@ class NameProvider(object):
     def __init__(self):
         self.name_store = NameStore()
 
+    def get_by_name(self, name):
+        return self.name_store.get_entry_by_name(name)
+
     def get_next_unrated_name(self, gender, starts_with, ends_with, min_len, max_len):
         name_data = [x for x in self.name_store.get_unrated_entries()]
         name_data = [x for x in name_data if len(x[0]) >= int(min_len) and len(x[0]) <= int(max_len)]

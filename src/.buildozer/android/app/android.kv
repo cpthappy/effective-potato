@@ -85,6 +85,23 @@
             size_hint: (1., 0.1)
             color: (0,0,0,1)
 
+        Label:
+            size_hint_y: None
+            text_size: self.width, None
+            height: self.texture_size[1]
+            id: 'info'
+            text: root.name_info
+            #size_hint: (1., 0.1)
+            color: (0,0,0,1)
+            halign: 'center'
+            valign: 'middle'
+
+        Label:
+            id: 'variants'
+            text: root.name_variants
+            size_hint: (1., 0.1)
+            color: (0,0,0,1)
+
         BoxLayout:
             size_hint: (1., 0.1)
             spacing: 10
@@ -106,7 +123,7 @@
                 color: [0.5,0.5,0.5,1]
                 font_size: '100dp'
                 markup: True # Always turn markup on
-                text: "%s"%(icon('flaticon-round67'))
+                text: "%s"%(icon('flaticon-direction344'))
 
             Button:
                 on_press: root.rate_con()

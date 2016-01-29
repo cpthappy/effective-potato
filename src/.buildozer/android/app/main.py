@@ -12,6 +12,7 @@ from kivy.uix.button import Button
 from kivy.properties import StringProperty, ListProperty
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.listview import ListItemButton
 
 from kivy.core.window import Window
 from kivy.utils import get_color_from_hex
@@ -23,6 +24,9 @@ from NameProvider import NameProvider
 class RatingView(Screen):
     name_value = StringProperty()
     name_origin = StringProperty()
+    name_info = StringProperty()
+    name_variants = StringProperty()
+
     gender_color = ListProperty([0, 1, 0, 1])
 
     def __init__(self, **kwargs):
@@ -51,13 +55,20 @@ class RatingView(Screen):
                                                                 min_len,
                                                                 max_len)
 
-        if self.current_name:
-            #self.rate_pro_btn.enabled = True
-            #self.rate_con_btn.enabled = True
-            self.name_value = self.current_name[0]
-            self.name_origin = self.current_name[1]["region"]
+        print self.current_name
 
-            if self.current_name[1]["gender"] == "m":
+        if self.current_name:
+            self.name_value = self.current_name[0]
+            self.name_origin = self.current_name[1]["language"]
+            variants = ', '.join([x for x in self.current_name[1]["variants"] if x != self.current_name[0]])
+            if len(variants):
+                variants = "Varianten: " + variants
+            self.name_variants = variants
+
+            info = [self.current_name[1]["origin"], self.current_name[1]["meaning"], self.current_name[1]["words"]]
+            self.name_info = '\n'.join(info)
+
+            if self.current_name[1]["gender"].startswith("m"):
                 self.gender_color = [0, 0, 1, 1]
             else:
                 self.gender_color = [1, 0, .75, 1]
@@ -127,6 +138,9 @@ class AndroidApp(App):
     def build(self):
         return presentation
 
+    def on_pause(self):
+        return True
+
     def build_config(self, config):
         config.setdefaults('Filter', { 'gender': "Beide",
                                         'starts_with': "",
@@ -136,7 +150,7 @@ class AndroidApp(App):
     def build_settings(self, settings):
         settings.add_json_panel("Filter Einstellungen", self.config, data = """
             [
-                {"type": "options", "title": "Geschlecht", "section": "Filter", "key": "gender", "options": ["Beide", "Junge", "Mädchen"]},
+                {"type": "options", "title": "Geschlecht", "section": "Filter", "key": "gender", "options": ["Beide", "männlich", "weiblich"]},
                 {"type": "string", "title": "Anfang", "section": "Filter", "key": "starts_with"},
                 {"type": "string", "title": "Ende", "section": "Filter", "key": "ends_with"},
                 {"type": "numeric", "title": "Minimale Länge", "section": "Filter", "key": "min_len"},

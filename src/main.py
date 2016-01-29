@@ -12,7 +12,7 @@ from kivy.uix.button import Button
 from kivy.properties import StringProperty, ListProperty
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.uix.listview import ListItemButton
+from kivy.uix.listview import ListItemButton, ListItemLabel
 
 from kivy.core.window import Window
 from kivy.utils import get_color_from_hex
@@ -107,20 +107,44 @@ class FavoritesView(Screen):
         self.favorite_names = name_provider.get_favorites()
         self.ids.favorite_list._trigger_reset_populate()
 
+    def remove(self, an_obj):
+        current_name = name_provider.get_by_name(an_obj.id)
+        del current_name[1]['rating']
+        name_provider.rate(current_name, 0)
+        self.update()
+
     def args_converter(self, row_index, an_obj):
         print an_obj
-        if an_obj[1]["gender"] == "m":
+        if an_obj[1]["gender"].startswith("m"):
             box_color = [0, 0, 1, 1]
         else:
             box_color = [1, 0, .75, 1]
         return {'text': an_obj[0],
-                'size_hint_y': None,
-                'font_size': '30sp',
-                'height': 50,
-                'color': box_color,
-                'deselected_color': [1,1,1,1],
-                'selected_color': [0.5, 0.5, 0.5, 0.5],
-                'background_normal': ""}
+                 'size_hint_y': None,
+                 'height': 60,
+                 'cls_dicts': [{'cls': ListItemLabel,
+                                'kwargs': {'text': an_obj[0],
+                                            'color' : box_color,
+                                            'font_size': '30sp',
+                                            'height': 50,
+                                            'size_hint_x': 1}},
+                               {'cls': ListItemButton,
+                                'kwargs': {'text': 'Info',
+                                'size_hint_x': 0.25}},
+                                {'cls': ListItemButton,
+                                 'kwargs': {'text': 'Del',
+                                 'id': an_obj[0],
+                                 'size_hint_x': 0.25,
+                                 'on_press': self.remove}}
+                               ]}
+        # return {'text': an_obj[0],
+        #         'size_hint_y': None,
+        #         'font_size': '30sp',
+        #         'height': 50,
+        #         'color': box_color,
+        #         'deselected_color': [1,1,1,1],
+        #         'selected_color': [0.5, 0.5, 0.5, 0.5],
+        #         'background_normal': ""}
 
 class FilterView(Screen):
     pass
