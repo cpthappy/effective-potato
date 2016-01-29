@@ -21,6 +21,9 @@ from kivy.garden import iconfonts
 
 from NameProvider import NameProvider
 
+class FavoriteEntry(ListItemButton):
+    pass
+
 class RatingView(Screen):
     name_value = StringProperty()
     name_origin = StringProperty()
