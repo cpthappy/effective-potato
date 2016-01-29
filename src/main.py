@@ -132,7 +132,8 @@ class FavoritesView(Screen):
                                 'kwargs': {'text': 'Info',
                                 'size_hint_x': 0.25}},
                                 {'cls': ListItemButton,
-                                 'kwargs': {'text': 'Del',
+                                 'kwargs': {'text': iconfonts.icon('flaticon-delete96'),
+                                 'markup':True,
                                  'id': an_obj[0],
                                  'size_hint_x': 0.25,
                                  'on_press': self.remove}}
