@@ -29,9 +29,7 @@ class FavoriteEntry(ListItemButton):
 
 class RatingView(Screen):
     name_value = StringProperty()
-    name_origin = StringProperty()
     name_info = StringProperty()
-    name_variants = StringProperty()
 
     gender_color = ListProperty((0.467, 0.286, 1, 0.75))
 
@@ -62,25 +60,16 @@ class RatingView(Screen):
 
         if self.current_name:
             self.name_value = self.current_name[0]
-            self.name_origin = self.current_name[1]["language"]
-            variants = ', '.join([x for x in self.current_name[1]["variants"] if x != self.current_name[0]])
-            if len(variants):
-                variants = "Varianten: " + variants
-            self.name_variants = variants
-
-            info = [self.current_name[1]["origin"], self.current_name[1]["meaning"], self.current_name[1]["words"]]
-            self.name_info = '\n'.join(info)
+            self.name_info = name_provider.get_rst(*self.current_name)
 
             if self.current_name[1]["gender"].startswith("m"):
                 self.gender_color = (0.235, 0.451, 1, 0.75)
             else:
                 self.gender_color = (0.847, 0.235, 1, 0.75)
         else:
-            #self.rate_pro_btn.enabled = False
-            #self.rate_con_btn.enabled = False
             self.name_value = "Keine weiteren\nNamen"
             self.gender_color = (0.467, 0.286, 1, 0.5)
-            self.name_origin = "Zur Anzeige weiterer Namen\nFilter oder Bewertungen\nlöschen."
+            self.name_info = "Zur Anzeige weiterer Namen\nFilter oder Bewertungen\nlöschen."
 
     def rate_pro(self):
         try:
@@ -115,12 +104,13 @@ class FavoritesView(Screen):
 
     def info(sefl, an_obj):
         name = name_provider.get_by_name(an_obj.id.split('_')[-1])
-
+        if name[1]["gender"].startswith("m"):
+            box_color = (0.235, 0.451, 1, 0.75)
+        else:
+            box_color = (0.847, 0.235, 1, 0.75)
         print name
         box = BoxLayout(orientation='vertical')
-        text = """
-            This is an **emphased text**.
-            """
+        text = name_provider.get_rst(name[0], name[1])
         document = RstDocument(text=text)
         close_button = Button(text='Close')
         box.add_widget(document)
@@ -128,9 +118,11 @@ class FavoritesView(Screen):
 
         popup = Popup(title=name[0],
                     content=box,
-                    size_hint=(None, None),
-                    size=(400, 400),
-                    auto_dismiss = False)
+                    auto_dismiss = False,
+                    title_color = box_color,
+                    title_size = '30sp',
+                    title_align = 'center',
+                    separator_color=(0.467, 0.286, 1, 0.75))
         close_button.bind(on_press=popup.dismiss)
         popup.open()
 
@@ -143,36 +135,30 @@ class FavoritesView(Screen):
                  'size_hint_y': None,
                  'height': 60,
                  'cls_dicts': [
-                              {'cls': ListItemButton,
-                               'kwargs': {'text': iconfonts.icon('flaticon-round66'),
-                               'id': 'info_' + an_obj[0],
-                               'on_press': self.info,
-                               'deselected_color': [1,1,1,1],
-                               'color': (0.467, 0.286, 1, 0.75),
-                               'font_size': '25sp',
-                               'background_normal': "",
-                               'background_down': "",
-                               'markup':True,
-                               'size_hint_x': 0.25}},
 
-                                {'cls': ListItemLabel,
+                                {'cls': ListItemButton,
                                 'kwargs': {'text': an_obj[0],
                                             'color' : box_color,
                                             'font_size': '30sp',
                                             'height': 50,
-                                            'size_hint_x': 1}},
+                                            'size_hint_x': 1,
+                                            'id': 'info_' + an_obj[0],
+                                            'background_normal': "",
+                                             'on_press': self.info,
+                                             'deselected_color': [1,1,1,1]}},
 
                                 {'cls': ListItemButton,
                                  'kwargs': {'text': iconfonts.icon('flaticon-rounded61'),
                                  'deselected_color': [1,1,1,1],
                                  'color': (1, 0.678, 0.384, 0.75),
                                  'background_normal': "",
-                                 'background_down': "",
+                                 #'background_down': "",
                                  'markup':True,
                                  'id': an_obj[0],
                                  'size_hint_x': 0.25,
-                                 'font_size': '25sp',
-                                 'on_press': self.remove}}
+                                 'font_size': '30sp',
+                                 'on_press': self.remove,
+                                 'halign': 'left'}}
                                ]}
 
 

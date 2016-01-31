@@ -2,32 +2,46 @@
 #:import label kivy.uix.label
 #:import ListAdapter kivy.adapters.listadapter.ListAdapter
 #:import ListItemButton kivy.uix.listview.ListItemButton
+#:import CompositeListItem kivy.uix.listview.CompositeListItem
 #:import sm kivy.uix.screenmanager
 #: import icon kivy.garden.iconfonts.icon
 
+# (0.847, 0.235, 1, 0.75)
+# (0.58, 0.216, 0.91, 0.75)
+# (0.467, 0.286, 1, 0.75)
+# (0.216, 0.227, 0.91, 0.75)
+# (0.235, 0.451, 1, 0.75)
+
+# (1, 0.678, 0.384, 0.75)
+# (0.149, 0.8, 0.196, 0.75)
+
 <MenuBar@ActionBar>:
     pos_hint: {'top':1}
-    background_normal: ""
-    previous_image: 'res/logo.png'
+    background_image: 'res/white-bg.png'
+    background_color: (0.467, 0.286, 1, 0.75)
     ActionView:
         use_separator: True
         ActionPrevious:
             title: 'Nomen est omen'
             with_previous: False
-            app_icon: 'res/logo.png'
-        ActionOverflow:
-            ActionButton:
-                markup: True # Always turn markup on
-                text: "%s Namen entdecken"%(icon('flaticon-baby29'))
-                on_release:  app.root.current = 'rating'
-            ActionButton:
-                markup: True # Always turn markup on
-                text: "%s Favoriten"%(icon('flaticon-loving34'))
-                on_release:  app.root.current = 'favs'
-            ActionButton:
-                markup: True # Always turn markup on
-                text: "%s Einstellungen"%(icon('flaticon-settings48'))
-                on_release:  app.open_settings()
+            app_icon: 'res/g3.png'
+            app_icon_height: 1
+            app_icon_width: 1
+        ActionButton:
+            markup: True # Always turn markup on
+            text: "%s"%(icon('flaticon-eye105'))
+            font_size: '25dp'
+            on_release:  app.root.current = 'rating'
+        ActionButton:
+            markup: True # Always turn markup on
+            text: "%s"%(icon('flaticon-heart296'))
+            font_size: '25dp'
+            on_release:  app.root.current = 'favs'
+        ActionButton:
+            markup: True # Always turn markup on
+            text: "%s"%(icon('flaticon-settings51'))
+            font_size: '25dp'
+            on_release:  app.open_settings()
 
 <FavoritesView>:
     name: 'favs'
@@ -43,25 +57,8 @@
                 ListAdapter(
                 args_converter=root.args_converter,
                 data=root.favorite_names,
-                selection_mode='single',
-                cls=ListItemButton)
-        BoxLayout:
-            size_hint_y: 0.25
-            orientation: 'horizontal'
-            Button:
-                background_normal: ""
-                Image:
-                    source: 'res/info.png'
-                    center_x: self.parent.center_x
-                    center_y: self.parent.center_y
-            Button:
-                background_normal: ""
-                Image:
-                    source: 'res/delete.png'
-                    center_x: self.parent.center_x
-                    center_y: self.parent.center_y
-
-
+                selection_mode='none',
+                cls=CompositeListItem)
 
 <RatingView>:
     name:  'rating'
@@ -91,16 +88,26 @@
             height: self.texture_size[1]
             id: 'info'
             text: root.name_info
-            #size_hint: (1., 0.1)
             color: (0,0,0,1)
             halign: 'center'
             valign: 'middle'
 
         Label:
+            size_hint_y: None
+            text_size: self.width, None
+            height: self.texture_size[1]
             id: 'variants'
             text: root.name_variants
             size_hint: (1., 0.1)
             color: (0,0,0,1)
+            halign: 'center'
+            valign: 'middle'
+
+            # (0.847, 0.235, 1, 0.75)
+            # (0.58, 0.216, 0.91, 0.75)
+            # (0.467, 0.286, 1, 0.75)
+            # (0.216, 0.227, 0.91, 0.75)
+            # (0.235, 0.451, 1, 0.75)
 
         BoxLayout:
             size_hint: (1., 0.1)
@@ -110,30 +117,30 @@
                 background_color: [1,1,1,1]
                 background_normal: ""
                 background_down: ""
-                color: [0,1,0,1]
-                font_size: '100dp'
+                color: (0.149, 0.8, 0.196, 0.75)
+                font_size: '60dp'
                 markup: True # Always turn markup on
-                text: "%s"%(icon('flaticon-round68'))
+                text: "%s"%(icon('flaticon-round69'))
 
             Button:
                 on_press: root.update_current_name()
                 background_color: [1,1,1,1]
                 background_normal: ""
                 background_down: ""
-                color: [0.5,0.5,0.5,1]
-                font_size: '100dp'
+                color: (0.467, 0.286, 1, 0.75)
+                font_size: '60dp'
                 markup: True # Always turn markup on
-                text: "%s"%(icon('flaticon-direction344'))
+                text: "%s"%(icon('flaticon-refresh61'))
 
             Button:
                 on_press: root.rate_con()
                 background_color: [1,1,1,1]
-                color: [1,0,0,1]
-                font_size: '100dp'
+                color: (1, 0.678, 0.384, 0.75)
+                font_size: '60dp'
                 background_normal: ""
                 background_down: ""
                 markup: True # Always turn markup on
-                text: "%s"%(icon('flaticon-close6'))
+                text: "%s"%(icon('flaticon-rounded61'))
 
 ScreenManagement:
     transition: sm.NoTransition()

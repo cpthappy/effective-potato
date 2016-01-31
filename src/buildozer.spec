@@ -33,7 +33,7 @@ version.filename = %(source.dir)s/main.py
 
 # (list) Application requirements
 # comma seperated e.g. requirements = sqlite3,kivy
-requirements = kivy
+requirements = kivy,docutils
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -46,7 +46,7 @@ garden_requirements = iconfonts
 #presplash.filename = %(source.dir)s/data/presplash.png
 
 # (str) Icon of the application
-icon.filename = %(source.dir)s/res/logo.png
+icon.filename = %(source.dir)s/res/sparrow.png
 
 # (str) Supported orientation (one of landscape, portrait or all)
 orientation = portrait
