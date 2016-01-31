@@ -3,6 +3,7 @@
 #:import ListAdapter kivy.adapters.listadapter.ListAdapter
 #:import ListItemButton kivy.uix.listview.ListItemButton
 #:import CompositeListItem kivy.uix.listview.CompositeListItem
+#:import RstDocument kivy.uix.rst.RstDocument
 #:import sm kivy.uix.screenmanager
 #: import icon kivy.garden.iconfonts.icon
 
@@ -76,32 +77,11 @@
             background_color: [1,0,0,1]
             size_hint: (1., 0.1)
 
-        Label:
-            id: 'origin'
-            text: root.name_origin
-            size_hint: (1., 0.1)
-            color: (0,0,0,1)
-
-        Label:
-            size_hint_y: None
-            text_size: self.width, None
-            height: self.texture_size[1]
+        RstDocument:
             id: 'info'
             text: root.name_info
-            color: (0,0,0,1)
-            halign: 'center'
-            valign: 'middle'
-
-        Label:
-            size_hint_y: None
-            text_size: self.width, None
-            height: self.texture_size[1]
-            id: 'variants'
-            text: root.name_variants
-            size_hint: (1., 0.1)
-            color: (0,0,0,1)
-            halign: 'center'
-            valign: 'middle'
+            size_hint: (1., 0.3)
+            background_color: (1,1,1,1)
 
             # (0.847, 0.235, 1, 0.75)
             # (0.58, 0.216, 0.91, 0.75)

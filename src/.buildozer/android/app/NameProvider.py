@@ -9,6 +9,20 @@ class NameProvider(object):
     def __init__(self):
         self.name_store = NameStore()
 
+    def get_rst(self, name, name_data):
+        text = "**Sprache**\n\n  %s\n\n" % name_data["language"]
+        if name_data["meaning"] != "-":
+            text += "**Bedeutung**\n\n  %s \n\n" % name_data["meaning"]
+        if name_data["origin"] != "-":
+            text += "**Herkunft**\n\n %s\n\n" % name_data["origin"]
+        if name_data["words"] != "-":
+            text += u"**Wörter**\n\n %s\n\n" % name_data["words"]
+        variants = [x for x in name_data["variants"] if x != name]
+        if variants:
+            text += "**Varianten**\n\n %s\n\n" % ', '.join(variants)
+
+        return text
+
     def get_by_name(self, name):
         return self.name_store.get_entry_by_name(name)
 

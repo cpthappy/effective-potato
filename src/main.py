@@ -111,8 +111,10 @@ class FavoritesView(Screen):
         print name
         box = BoxLayout(orientation='vertical')
         text = name_provider.get_rst(name[0], name[1])
-        document = RstDocument(text=text)
-        close_button = Button(text='Close')
+        document = RstDocument(text=text, size_hint=(1.,0.9))
+        close_button = Button(text=u"Zurück", 
+        markup=True, size_hint=(1., 0.1),
+        background_color=(0.467, 0.286, 1, 0.75))
         box.add_widget(document)
         box.add_widget(close_button)
 
