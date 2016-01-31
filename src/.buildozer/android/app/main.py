@@ -112,7 +112,7 @@ class FavoritesView(Screen):
         box = BoxLayout(orientation='vertical')
         text = name_provider.get_rst(name[0], name[1])
         document = RstDocument(text=text, size_hint=(1.,0.9))
-        close_button = Button(text=u"Zurück", 
+        close_button = Button(text=u"Zurück",
         markup=True, size_hint=(1., 0.1),
         background_color=(0.467, 0.286, 1, 0.75))
         box.add_widget(document)
@@ -178,10 +178,14 @@ class AndroidApp(App):
     use_kivy_settings  =  False
 
     def build(self):
-        return presentation
+        self.mainwidget = presentation
+        return self.mainwidget
 
     def on_pause(self):
         return True
+
+    def update_after_config(self, *args, **kwargs):
+        self.mainwidget.get_screen('rating').update_current_name()
 
     def build_config(self, config):
         config.setdefaults('Filter', { 'gender': "Beide",
@@ -200,5 +204,7 @@ class AndroidApp(App):
             ]
         """
         )
+
+        settings.bind(on_config_change=self.update_after_config)
 
 AndroidApp().run()
