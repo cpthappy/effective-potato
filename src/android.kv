@@ -6,16 +6,27 @@
 #:import sm kivy.uix.screenmanager
 #: import icon kivy.garden.iconfonts.icon
 
+# (0.847, 0.235, 1, 0.75)
+# (0.58, 0.216, 0.91, 0.75)
+# (0.467, 0.286, 1, 0.75)
+# (0.216, 0.227, 0.91, 0.75)
+# (0.235, 0.451, 1, 0.75)
+
+# (1, 0.678, 0.384, 0.75)
+# (0.149, 0.8, 0.196, 0.75)
+
 <MenuBar@ActionBar>:
     pos_hint: {'top':1}
-    background_normal: ""
-    previous_image: 'res/logo.png'
+    background_image: 'res/white-bg.png'
+    background_color: (0.467, 0.286, 1, 0.75)
     ActionView:
         use_separator: True
         ActionPrevious:
             title: 'Nomen est omen'
             with_previous: False
-            app_icon: 'res/sparrow.png'
+            app_icon: 'res/g3.png'
+            app_icon_height: 1
+            app_icon_width: 1
         ActionButton:
             markup: True # Always turn markup on
             text: "%s"%(icon('flaticon-baby29'))
@@ -92,6 +103,12 @@
             halign: 'center'
             valign: 'middle'
 
+            # (0.847, 0.235, 1, 0.75)
+            # (0.58, 0.216, 0.91, 0.75)
+            # (0.467, 0.286, 1, 0.75)
+            # (0.216, 0.227, 0.91, 0.75)
+            # (0.235, 0.451, 1, 0.75)
+
         BoxLayout:
             size_hint: (1., 0.1)
             spacing: 10
@@ -100,7 +117,7 @@
                 background_color: [1,1,1,1]
                 background_normal: ""
                 background_down: ""
-                color: [0,1,0,1]
+                color: (0.149, 0.8, 0.196, 0.75)
                 font_size: '75dp'
                 markup: True # Always turn markup on
                 text: "%s"%(icon('flaticon-round68'))
@@ -110,7 +127,7 @@
                 background_color: [1,1,1,1]
                 background_normal: ""
                 background_down: ""
-                color: [0.5,0.5,0.5,1]
+                color: (0.467, 0.286, 1, 0.75)
                 font_size: '75dp'
                 markup: True # Always turn markup on
                 text: "%s"%(icon('flaticon-direction344'))
@@ -118,7 +135,7 @@
             Button:
                 on_press: root.rate_con()
                 background_color: [1,1,1,1]
-                color: [1,0,0,1]
+                color: (1, 0.678, 0.384, 0.75)
                 font_size: '75dp'
                 background_normal: ""
                 background_down: ""

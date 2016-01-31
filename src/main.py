@@ -11,8 +11,10 @@ from kivy.lang import Builder
 from kivy.uix.button import Button
 from kivy.properties import StringProperty, ListProperty
 from kivy.uix.label import Label
+from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.listview import ListItemButton, ListItemLabel
+from kivy.uix.boxlayout import BoxLayout
 
 from kivy.core.window import Window
 from kivy.utils import get_color_from_hex
@@ -30,7 +32,7 @@ class RatingView(Screen):
     name_info = StringProperty()
     name_variants = StringProperty()
 
-    gender_color = ListProperty([0, 1, 0, 1])
+    gender_color = ListProperty((0.467, 0.286, 1, 0.75))
 
     def __init__(self, **kwargs):
         super(RatingView, self).__init__(**kwargs)
@@ -51,14 +53,11 @@ class RatingView(Screen):
             ends_with = ""
             min_len = 1
             max_len = 20
-            print "FEHLER"
         self.current_name = name_provider.get_next_unrated_name(gender,
                                                                 starts_with,
                                                                 ends_with,
                                                                 min_len,
                                                                 max_len)
-
-        print self.current_name
 
         if self.current_name:
             self.name_value = self.current_name[0]
@@ -72,14 +71,14 @@ class RatingView(Screen):
             self.name_info = '\n'.join(info)
 
             if self.current_name[1]["gender"].startswith("m"):
-                self.gender_color = [0, 0, 1, 1]
+                self.gender_color = (0.235, 0.451, 1, 0.75)
             else:
-                self.gender_color = [1, 0, .75, 1]
+                self.gender_color = (0.847, 0.235, 1, 0.75)
         else:
             #self.rate_pro_btn.enabled = False
             #self.rate_con_btn.enabled = False
             self.name_value = "Keine weiteren\nNamen"
-            self.gender_color = [0.5, 0.5, 0.5, 0.5]
+            self.gender_color = (0.467, 0.286, 1, 0.5)
             self.name_origin = "Zur Anzeige weiterer Namen\nFilter oder Bewertungen\nlöschen."
 
     def rate_pro(self):
@@ -113,42 +112,66 @@ class FavoritesView(Screen):
         name_provider.rate(current_name, 0)
         self.update()
 
+    def info(sefl, an_obj):
+        name = name_provider.get_by_name(an_obj.id.split('_')[-1])
+
+        print name
+        box = BoxLayout(orientation='vertical')
+        box.add_widget(Label(text='Hello world'))
+        box.add_widget(Label(text='Hello world'))
+        box.add_widget(Label(text='Hello world'))
+        close_button = Button(text='Close')
+        box.add_widget(close_button)
+
+        popup = Popup(title=name[0],
+                    content=box,
+                    size_hint=(None, None),
+                    size=(400, 400),
+                    auto_dismiss = False)
+        close_button.bind(on_press=popup.dismiss)
+        popup.open()
+
     def args_converter(self, row_index, an_obj):
-        print an_obj
         if an_obj[1]["gender"].startswith("m"):
-            box_color = [0, 0, 1, 1]
+            box_color = (0.235, 0.451, 1, 0.75)
         else:
-            box_color = [1, 0, .75, 1]
+            box_color = (0.847, 0.235, 1, 0.75)
         return {'text': an_obj[0],
                  'size_hint_y': None,
                  'height': 60,
-                 'cls_dicts': [{'cls': ListItemLabel,
+                 'cls_dicts': [
+                              {'cls': ListItemButton,
+                               'kwargs': {'text': iconfonts.icon('flaticon-round67'),
+                               'id': 'info_' + an_obj[0],
+                               'on_press': self.info,
+                               'deselected_color': [1,1,1,1],
+                               'color': (0.467, 0.286, 1, 0.75),
+                               'font_size': '25sp',
+                               'background_normal': "",
+                               'background_down': "",
+                               'markup':True,
+                               'size_hint_x': 0.25}},
+
+                                {'cls': ListItemLabel,
                                 'kwargs': {'text': an_obj[0],
                                             'color' : box_color,
                                             'font_size': '30sp',
                                             'height': 50,
                                             'size_hint_x': 1}},
-                               {'cls': ListItemButton,
-                                'kwargs': {'text': 'Info',
-                                'size_hint_x': 0.25}},
+
                                 {'cls': ListItemButton,
-                                 'kwargs': {'text': iconfonts.icon('flaticon-delete96'),
+                                 'kwargs': {'text': iconfonts.icon('flaticon-close6'),
+                                 'deselected_color': [1,1,1,1],
+                                 'color': (1, 0.678, 0.384, 0.75),
+                                 'background_normal': "",
+                                 'background_down': "",
                                  'markup':True,
                                  'id': an_obj[0],
                                  'size_hint_x': 0.25,
+                                 'font_size': '25sp',
                                  'on_press': self.remove}}
                                ]}
-        # return {'text': an_obj[0],
-        #         'size_hint_y': None,
-        #         'font_size': '30sp',
-        #         'height': 50,
-        #         'color': box_color,
-        #         'deselected_color': [1,1,1,1],
-        #         'selected_color': [0.5, 0.5, 0.5, 0.5],
-        #         'background_normal': ""}
 
-class FilterView(Screen):
-    pass
 
 class ScreenManagement(ScreenManager):
     pass
