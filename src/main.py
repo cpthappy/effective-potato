@@ -67,9 +67,9 @@ class RatingView(Screen):
             else:
                 self.gender_color = (0.847, 0.235, 1, 0.75)
         else:
-            self.name_value = "Keine weiteren\nNamen"
+            self.name_value = iconfonts.icon("flaticon-prohibition23")
             self.gender_color = (0.467, 0.286, 1, 0.5)
-            self.name_info = "Zur Anzeige weiterer Namen\nFilter oder Bewertungen\nlöschen."
+            self.name_info = "Zur Anzeige weiterer Namen, Filtereinstellungen ändern oder Bewertungen löschen."
 
     def rate_pro(self):
         try:
