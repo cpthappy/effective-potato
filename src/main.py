@@ -15,6 +15,7 @@ from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.listview import ListItemButton, ListItemLabel
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.rst import RstDocument
 
 from kivy.core.window import Window
 from kivy.utils import get_color_from_hex
@@ -117,10 +118,12 @@ class FavoritesView(Screen):
 
         print name
         box = BoxLayout(orientation='vertical')
-        box.add_widget(Label(text='Hello world'))
-        box.add_widget(Label(text='Hello world'))
-        box.add_widget(Label(text='Hello world'))
+        text = """
+            This is an **emphased text**.
+            """
+        document = RstDocument(text=text)
         close_button = Button(text='Close')
+        box.add_widget(document)
         box.add_widget(close_button)
 
         popup = Popup(title=name[0],
@@ -141,7 +144,7 @@ class FavoritesView(Screen):
                  'height': 60,
                  'cls_dicts': [
                               {'cls': ListItemButton,
-                               'kwargs': {'text': iconfonts.icon('flaticon-round67'),
+                               'kwargs': {'text': iconfonts.icon('flaticon-round66'),
                                'id': 'info_' + an_obj[0],
                                'on_press': self.info,
                                'deselected_color': [1,1,1,1],
@@ -160,7 +163,7 @@ class FavoritesView(Screen):
                                             'size_hint_x': 1}},
 
                                 {'cls': ListItemButton,
-                                 'kwargs': {'text': iconfonts.icon('flaticon-close6'),
+                                 'kwargs': {'text': iconfonts.icon('flaticon-rounded61'),
                                  'deselected_color': [1,1,1,1],
                                  'color': (1, 0.678, 0.384, 0.75),
                                  'background_normal': "",
@@ -183,7 +186,7 @@ Window.clearcolor = get_color_from_hex('#ffffff')
 presentation = Builder.load_file("android.kv")
 
 class AndroidApp(App):
-    icon = "res/logo.png"
+    icon = "res/sparrow.png"
     use_kivy_settings  =  False
 
     def build(self):

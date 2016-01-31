@@ -29,17 +29,17 @@
             app_icon_width: 1
         ActionButton:
             markup: True # Always turn markup on
-            text: "%s"%(icon('flaticon-baby29'))
+            text: "%s"%(icon('flaticon-eye105'))
             font_size: '25dp'
             on_release:  app.root.current = 'rating'
         ActionButton:
             markup: True # Always turn markup on
-            text: "%s"%(icon('flaticon-loving34'))
+            text: "%s"%(icon('flaticon-heart296'))
             font_size: '25dp'
             on_release:  app.root.current = 'favs'
         ActionButton:
             markup: True # Always turn markup on
-            text: "%s"%(icon('flaticon-settings48'))
+            text: "%s"%(icon('flaticon-settings51'))
             font_size: '25dp'
             on_release:  app.open_settings()
 
@@ -118,9 +118,9 @@
                 background_normal: ""
                 background_down: ""
                 color: (0.149, 0.8, 0.196, 0.75)
-                font_size: '75dp'
+                font_size: '60dp'
                 markup: True # Always turn markup on
-                text: "%s"%(icon('flaticon-round68'))
+                text: "%s"%(icon('flaticon-round69'))
 
             Button:
                 on_press: root.update_current_name()
@@ -128,19 +128,19 @@
                 background_normal: ""
                 background_down: ""
                 color: (0.467, 0.286, 1, 0.75)
-                font_size: '75dp'
+                font_size: '60dp'
                 markup: True # Always turn markup on
-                text: "%s"%(icon('flaticon-direction344'))
+                text: "%s"%(icon('flaticon-refresh61'))
 
             Button:
                 on_press: root.rate_con()
                 background_color: [1,1,1,1]
                 color: (1, 0.678, 0.384, 0.75)
-                font_size: '75dp'
+                font_size: '60dp'
                 background_normal: ""
                 background_down: ""
                 markup: True # Always turn markup on
-                text: "%s"%(icon('flaticon-close6'))
+                text: "%s"%(icon('flaticon-rounded61'))
 
 ScreenManagement:
     transition: sm.NoTransition()

@@ -23,7 +23,7 @@ for entry in detailed:
     store.put(entry[0],
                 gender=entry[2],
                 language=entry[-1],
-                variants = '\t'.join(tmp_var),
+                variants = tmp_var,
                 words=entry[-2],
                 origin=entry[1],
                 meaning=entry[3])
