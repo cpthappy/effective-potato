@@ -202,6 +202,7 @@ class AndroidApp(App):
 
     def build(self):
         self.mainwidget = presentation
+        self.update_after_config()
         return self.mainwidget
 
     def on_pause(self):
