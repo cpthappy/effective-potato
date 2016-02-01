@@ -24,8 +24,18 @@ from kivy.garden import iconfonts
 
 from NameProvider import NameProvider
 
-class FavoriteEntry(ListItemButton):
-    pass
+LANGS = ['ALLE', 'Altslawisch', 'Altgriechisch', 'Skandinavisch', 'Russisch', 'Turkmenisch',
+'Baskisch', 'Etruskisch', 'Altpersisch', 'Altnordisch', 'Sanskrit', 'Franz\xc3\xb6sisch',
+'Italienisch', 'Friesisch', 'Albanisch', 'Maori', 'Englisch', 'Polnisch', 'Igbo',
+'Hebr\xc3\xa4isch', 'Provenzalisch', 'Altisl\xc3\xa4ndisch', 'R\xc3\xa4toromanisch',
+'Lateinisch', 'Aram\xc3\xa4isch', 'Thai', 'Finnisch', 'Persisch', 'Keltisch',
+'Portugiesisch', 'Althochdeutsch', 'Kurdisch', 'Japanisch', 'Spanisch', 'Hawaiianisch',
+ 'Altirisch', 'Arabisch', 'Tagalog', 'Unbekannt', 'Slawisch', 'Suaheli', 'Ungarisch',
+ 'Germanisch', 'Deutsch', 'Walisisch', 'Kimbundu', 'Altfranz\xc3\xb6sisch', 'Gothisch',
+ 'Ph\xc3\xb6nizisch', 'Rum\xc3\xa4nisch', 'Litauisch', 'T\xc3\xbcrkisch', 'Altenglisch',
+ 'Alt-Provenzalisch', 'Tibetanisch']
+
+
 
 class RatingView(Screen):
     name_value = StringProperty()
@@ -36,6 +46,7 @@ class RatingView(Screen):
     def __init__(self, **kwargs):
         super(RatingView, self).__init__(**kwargs)
         self.current_name = None
+        self.remaining_names = 0
         self.update_current_name()
 
     def update_current_name(self):
@@ -52,7 +63,7 @@ class RatingView(Screen):
             ends_with = ""
             min_len = 1
             max_len = 20
-        self.current_name = name_provider.get_next_unrated_name(gender,
+        self.current_name, self.remaining_names = name_provider.get_next_unrated_name(gender,
                                                                 starts_with,
                                                                 ends_with,
                                                                 min_len,
@@ -67,9 +78,9 @@ class RatingView(Screen):
             else:
                 self.gender_color = (0.847, 0.235, 1, 0.75)
         else:
-            self.name_value = "Keine weiteren\nNamen"
+            self.name_value = iconfonts.icon("flaticon-prohibition23")
             self.gender_color = (0.467, 0.286, 1, 0.5)
-            self.name_info = "Zur Anzeige weiterer Namen\nFilter oder Bewertungen\nlöschen."
+            self.name_info = "Zur Anzeige weiterer Namen, Filtereinstellungen ändern oder Bewertungen löschen."
 
     def rate_pro(self):
         try:
@@ -189,6 +200,7 @@ class AndroidApp(App):
 
     def build_config(self, config):
         config.setdefaults('Filter', { 'gender': "Beide",
+                                        'lang' : 'ALLE',
                                         'starts_with': "",
                                         'ends_with': "",
                                         'min_len': 1,
@@ -197,6 +209,16 @@ class AndroidApp(App):
         settings.add_json_panel("Filter Einstellungen", self.config, data = """
             [
                 {"type": "options", "title": "Geschlecht", "section": "Filter", "key": "gender", "options": ["Beide", "männlich", "weiblich"]},
+                {"type": "options", "title": "Sprache", "section": "Filter", "key": "lang", "options": ["ALLE", "Altslawisch", "Altgriechisch", "Skandinavisch", "Russisch", "Turkmenisch",
+                "Baskisch", "Etruskisch", "Altpersisch", "Altnordisch", "Sanskrit", "Franz\xc3\xb6sisch",
+                "Italienisch", "Friesisch", "Albanisch", "Maori", "Englisch", "Polnisch", "Igbo",
+                "Hebr\xc3\xa4isch", "Provenzalisch", "Altisl\xc3\xa4ndisch", "R\xc3\xa4toromanisch",
+                "Lateinisch", "Aram\xc3\xa4isch", "Thai", "Finnisch", "Persisch", "Keltisch",
+                "Portugiesisch", "Althochdeutsch", "Kurdisch", "Japanisch", "Spanisch", "Hawaiianisch",
+                 "Altirisch", "Arabisch", "Tagalog", "Unbekannt", "Slawisch", "Suaheli", "Ungarisch",
+                 "Germanisch", "Deutsch", "Walisisch", "Kimbundu", "Altfranz\xc3\xb6sisch", "Gothisch",
+                 "Ph\xc3\xb6nizisch", "Rum\xc3\xa4nisch", "Litauisch", "T\xc3\xbcrkisch", "Altenglisch",
+                 "Alt-Provenzalisch", "Tibetanisch"]},
                 {"type": "string", "title": "Anfang", "section": "Filter", "key": "starts_with"},
                 {"type": "string", "title": "Ende", "section": "Filter", "key": "ends_with"},
                 {"type": "numeric", "title": "Minimale Länge", "section": "Filter", "key": "min_len"},

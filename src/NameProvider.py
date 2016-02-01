@@ -44,7 +44,7 @@ class NameProvider(object):
         if not name_data:
             return None
 
-        return random.choice(name_data)
+        return random.choice(name_data), len(name_data)
 
     def rate(self, current_name, rating):
         self.name_store.set_rating(current_name, rating)
