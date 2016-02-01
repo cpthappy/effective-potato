@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-#
 from NameStore import NameStore
 import random
+import string
+
+make_lang_key = lambda s : filter(lambda x: x in string.printable, s)
 
 class NameProvider(object):
     update_callback = None
@@ -26,23 +29,26 @@ class NameProvider(object):
     def get_by_name(self, name):
         return self.name_store.get_entry_by_name(name)
 
-    def get_next_unrated_name(self, gender, starts_with, ends_with, min_len, max_len):
-        name_data = [x for x in self.name_store.get_unrated_entries()]
-        name_data = [x for x in name_data if len(x[0]) >= int(min_len) and len(x[0]) <= int(max_len)]
+    def get_next_unrated_name(self, gender, starts_with, ends_with, min_len, max_len, langs):
+        try:
+            name_data = [x for x in self.name_store.get_unrated_entries() if langs[make_lang_key(x[1]["language"])]==u'1']
+            name_data = [x for x in name_data if len(x[0]) >= int(min_len) and len(x[0]) <= int(max_len)]
 
-        if gender.startswith("m"):
-            name_data = [x for x in name_data if x[1]["gender"].startswith("m")]
-        elif gender.startswith("w"):
-            name_data = [x for x in name_data if x[1]["gender"].startswith("w")]
+            if gender.startswith("m"):
+                name_data = [x for x in name_data if x[1]["gender"].startswith("m")]
+            elif gender.startswith("w"):
+                name_data = [x for x in name_data if x[1]["gender"].startswith("w")]
 
-        if starts_with != "":
-            name_data = [x for x in name_data if x[0].lower().startswith(starts_with)]
+            if starts_with != "":
+                name_data = [x for x in name_data if x[0].lower().startswith(starts_with)]
 
-        if ends_with != "":
-            name_data = [x for x in name_data if x[0].lower().endswith(ends_with)]
+            if ends_with != "":
+                name_data = [x for x in name_data if x[0].lower().endswith(ends_with)]
+        except TypeError:
+            return None, 0
 
         if not name_data:
-            return None
+            return None, 0
 
         return random.choice(name_data), len(name_data)
 

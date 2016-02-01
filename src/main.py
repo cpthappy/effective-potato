@@ -22,18 +22,26 @@ from kivy.utils import get_color_from_hex
 
 from kivy.garden import iconfonts
 
-from NameProvider import NameProvider
+from NameProvider import NameProvider, make_lang_key
 
-LANGS = ['ALLE', 'Altslawisch', 'Altgriechisch', 'Skandinavisch', 'Russisch', 'Turkmenisch',
-'Baskisch', 'Etruskisch', 'Altpersisch', 'Altnordisch', 'Sanskrit', 'Franz\xc3\xb6sisch',
-'Italienisch', 'Friesisch', 'Albanisch', 'Maori', 'Englisch', 'Polnisch', 'Igbo',
-'Hebr\xc3\xa4isch', 'Provenzalisch', 'Altisl\xc3\xa4ndisch', 'R\xc3\xa4toromanisch',
-'Lateinisch', 'Aram\xc3\xa4isch', 'Thai', 'Finnisch', 'Persisch', 'Keltisch',
-'Portugiesisch', 'Althochdeutsch', 'Kurdisch', 'Japanisch', 'Spanisch', 'Hawaiianisch',
- 'Altirisch', 'Arabisch', 'Tagalog', 'Unbekannt', 'Slawisch', 'Suaheli', 'Ungarisch',
- 'Germanisch', 'Deutsch', 'Walisisch', 'Kimbundu', 'Altfranz\xc3\xb6sisch', 'Gothisch',
- 'Ph\xc3\xb6nizisch', 'Rum\xc3\xa4nisch', 'Litauisch', 'T\xc3\xbcrkisch', 'Altenglisch',
- 'Alt-Provenzalisch', 'Tibetanisch']
+LANGS = [u'Friesisch',
+u'Lateinisch',
+u'Etruskisch',
+u'Französisch',
+u'Italienisch',
+u'Englisch',
+u'Irisch',
+u'Hebräisch',
+u'Keltisch',
+u'Persisch',
+u'Arabisch',
+u'Unbekannt',
+u'Nordisch',
+u'Deutsch',
+u'Walisisch',
+u'Slawisch',
+u'Griechisch'
+]
 
 
 
@@ -57,17 +65,21 @@ class RatingView(Screen):
             ends_with = config.getdefault("Filter", "ends_with", "").lower()
             min_len = config.getdefault("Filter", "min_len", 1).lower()
             max_len = config.getdefault("Filter", "max_len", 20).lower()
+            langs = {make_lang_key(x) :config.getdefault("Sprache", make_lang_key(x), u'1') for x in LANGS}
         except:
             gender = "Beide"
             starts_with = ""
             ends_with = ""
             min_len = 1
             max_len = 20
+            langs = {make_lang_key(x) :u'1' for x in LANGS}
+
         self.current_name, self.remaining_names = name_provider.get_next_unrated_name(gender,
                                                                 starts_with,
                                                                 ends_with,
                                                                 min_len,
-                                                                max_len)
+                                                                max_len,
+                                                                langs)
 
         if self.current_name:
             self.name_value = self.current_name[0]
@@ -119,7 +131,7 @@ class FavoritesView(Screen):
             box_color = (0.235, 0.451, 1, 0.75)
         else:
             box_color = (0.847, 0.235, 1, 0.75)
-        print name
+
         box = BoxLayout(orientation='vertical')
         text = name_provider.get_rst(name[0], name[1])
         document = RstDocument(text=text, size_hint=(1.,0.9))
@@ -200,25 +212,16 @@ class AndroidApp(App):
 
     def build_config(self, config):
         config.setdefaults('Filter', { 'gender': "Beide",
-                                        'lang' : 'ALLE',
                                         'starts_with': "",
                                         'ends_with': "",
                                         'min_len': 1,
                                         'max_len': 20 })
+        config.setdefaults('Sprache', {make_lang_key(l) :1 for l in LANGS})
+
     def build_settings(self, settings):
         settings.add_json_panel("Filter Einstellungen", self.config, data = """
             [
                 {"type": "options", "title": "Geschlecht", "section": "Filter", "key": "gender", "options": ["Beide", "männlich", "weiblich"]},
-                {"type": "options", "title": "Sprache", "section": "Filter", "key": "lang", "options": ["ALLE", "Altslawisch", "Altgriechisch", "Skandinavisch", "Russisch", "Turkmenisch",
-                "Baskisch", "Etruskisch", "Altpersisch", "Altnordisch", "Sanskrit", "Franz\xc3\xb6sisch",
-                "Italienisch", "Friesisch", "Albanisch", "Maori", "Englisch", "Polnisch", "Igbo",
-                "Hebr\xc3\xa4isch", "Provenzalisch", "Altisl\xc3\xa4ndisch", "R\xc3\xa4toromanisch",
-                "Lateinisch", "Aram\xc3\xa4isch", "Thai", "Finnisch", "Persisch", "Keltisch",
-                "Portugiesisch", "Althochdeutsch", "Kurdisch", "Japanisch", "Spanisch", "Hawaiianisch",
-                 "Altirisch", "Arabisch", "Tagalog", "Unbekannt", "Slawisch", "Suaheli", "Ungarisch",
-                 "Germanisch", "Deutsch", "Walisisch", "Kimbundu", "Altfranz\xc3\xb6sisch", "Gothisch",
-                 "Ph\xc3\xb6nizisch", "Rum\xc3\xa4nisch", "Litauisch", "T\xc3\xbcrkisch", "Altenglisch",
-                 "Alt-Provenzalisch", "Tibetanisch"]},
                 {"type": "string", "title": "Anfang", "section": "Filter", "key": "starts_with"},
                 {"type": "string", "title": "Ende", "section": "Filter", "key": "ends_with"},
                 {"type": "numeric", "title": "Minimale Länge", "section": "Filter", "key": "min_len"},
@@ -226,6 +229,13 @@ class AndroidApp(App):
             ]
         """
         )
+
+        lang_json=[]
+        for language in sorted(LANGS):
+            lang_json.append("""{"type": "bool", "title": "%s", "section": "Sprache", "key": "%s"}""" %
+            (language, make_lang_key(language) ))
+
+        settings.add_json_panel("Filter für Herkunft", self.config, data= "[%s]" % (','.join(lang_json)))
 
         settings.bind(on_config_change=self.update_after_config)
 

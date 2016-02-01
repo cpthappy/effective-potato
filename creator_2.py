@@ -8,6 +8,9 @@ def format_lang(language):
         language = language.replace('Alt', '')
         language = language[0].upper() + language[1:]
 
+    if language.startswith('Hochdeutsch'):
+        return u'Deutsch'
+
     return language
 
 # (name, origin, gender, meaning, words, language))
