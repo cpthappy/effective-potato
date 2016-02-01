@@ -222,11 +222,11 @@ class AndroidApp(App):
     def build_settings(self, settings):
         settings.add_json_panel("Filter Einstellungen", self.config, data = """
             [
-                {"type": "options", "title": "Geschlecht", "section": "Filter", "key": "gender", "options": ["Beide", "männlich", "weiblich"]},
-                {"type": "string", "title": "Anfang", "section": "Filter", "key": "starts_with"},
-                {"type": "string", "title": "Ende", "section": "Filter", "key": "ends_with"},
-                {"type": "numeric", "title": "Minimale Länge", "section": "Filter", "key": "min_len"},
-                {"type": "numeric", "title": "Maximale Länge", "section": "Filter", "key": "max_len"}
+                {"type": "options", "title": "Geschlecht", "desc": "Auswahl des Geschlechts für die angezeigten Namen", "section": "Filter", "key": "gender", "options": ["Beide", "männlich", "weiblich"]},
+                {"type": "string", "title": "Anfang", "desc": "Zeichen, mit denen die angezeigten Namen beginnen sollen", "section": "Filter", "key": "starts_with"},
+                {"type": "string", "title": "Ende", "desc": "Zeichen, mit denen die angezeigten Namen enden sollen", "section": "Filter", "key": "ends_with"},
+                {"type": "numeric", "title": "Minimale Länge", "desc": "Mindestlänge für die angezeigten Namen", "section": "Filter", "key": "min_len"},
+                {"type": "numeric", "title": "Maximale Länge", "desc": "Maximallänge für die angezeigten Namen", "section": "Filter", "key": "max_len"}
             ]
         """
         )
