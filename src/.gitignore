@@ -1,1 +1,6 @@
 bin/*
+*.ini
+license.txt
+.buildozer/*
+res/web-application-ui/*
+res/sparrow.svg
