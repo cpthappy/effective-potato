@@ -23,16 +23,28 @@ class NameStore(object):
         favs = []
 
         for name, data in self.store.find():
-            if "rating" in data.keys() and data["rating"] == 1:
-                favs.append((name, data))
+            try:
+                if data["rating"] == 1:
+                    favs.append((name, data))
+            except KeyError:
+                pass
         return favs
 
     def set_rating(self, current_name, rating_value):
         self.store.put(current_name[0], rating=rating_value, **current_name[1])
 
     def delete_con_rating(self):
-        print "Not Implemented"
-        pass
+        cons = []
+
+        for name, data in self.store.find():
+            try:
+                if data["rating"] == 0:
+                    cons.append((name, data))
+            except KeyError:
+                pass
+        for name, data in cons:
+            del data["rating"]
+            self.store.put(name, **data)
 
 if __name__ == "__main__":
     name_store = NameStore()
