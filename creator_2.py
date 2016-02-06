@@ -3,7 +3,6 @@ from collections import Counter
 
 TRESHOLD = 5
 
-
 def format_lang(language):
     if language.startswith('Alt'):
         language = language.replace('Alt', '')

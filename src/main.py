@@ -205,9 +205,19 @@ class SettingButtons(SettingItem):
         # to do nothing here
         return
     def On_ButtonPressed(self,instance):
-        print self.section
-        print self.key
         print instance.ID
+        if instance.ID == "button_clear_filter":
+            print "reset"
+            config = AndroidApp.get_running_app().config
+            config.setdefault("Filter", "gender", "Beide")
+            config.setdefault("Filter", "starts_with", "")
+            config.setdefault("Filter", "ends_with", "")
+            config.setdefault("Filter", "min_len", 1)
+            config.setdefault("Filter", "max_len", 20)
+            config.write()
+        elif instance.ID =="button_clear_cons":
+            print "delete"
+            name_provider.delete_con_rating()
         self.panel.settings.dispatch('on_config_change',self.panel.config, self.section, self.key, instance.ID)
 
 iconfonts.register('default_font', 'flaticon.ttf', 'flaticon.fontd')
@@ -248,7 +258,7 @@ class AndroidApp(App):
                 {"type": "numeric", "title": "Minimale Länge", "desc": "Mindestlänge für die angezeigten Namen", "section": "Filter", "key": "min_len"},
                 {"type": "numeric", "title": "Maximale Länge", "desc": "Maximallänge für die angezeigten Namen", "section": "Filter", "key": "max_len"},
                 {"type": "buttons","title": "Alle Filter löschen","desc": "Alle Filtereinstellungen zurücksetzen","section": "Filter","key": "filter_buttons","buttons":[{"title":"Filter löschen","id":"button_clear_filter"}]},
-                {"type": "buttons","title": "Negative Bewerungen löschen","desc": "Alle negativen Bewertungen zurücksetzen","section": "Filter","key": "filter_buttons","buttons":[{"title": "Zurücksetzen","id":"button_clear_cons"}]}
+                {"type": "buttons","title": "Negative Bewerungen löschen","desc": "Alle negativen Bewertungen zurücksetzen, dadurch werden alle negativ bewerteten Namen wieder angezeigt.","section": "Filter","key": "filter_buttons","buttons":[{"title": "Zurücksetzen","id":"button_clear_cons"}]}
             ]
         """
         )

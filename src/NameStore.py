@@ -30,6 +30,9 @@ class NameStore(object):
     def set_rating(self, current_name, rating_value):
         self.store.put(current_name[0], rating=rating_value, **current_name[1])
 
+    def delete_con_rating(self):
+        print "Not Implemented"
+        pass
 
 if __name__ == "__main__":
     name_store = NameStore()
