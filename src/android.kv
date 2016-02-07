@@ -52,8 +52,14 @@
         spacing: 1
 
         MenuBar:
+        Label:
+            text: 'Favoriten'
+            font_size: '40sp'
+            size_hint: (1., 0.1)
+            color: (0.467, 0.286, 1, 0.75)
         ListView:
             id: favorite_list
+            size_hint: (1., 0.9)
             adapter:
                 ListAdapter(
                 args_converter=root.args_converter,
