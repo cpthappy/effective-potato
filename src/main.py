@@ -48,6 +48,7 @@ u'Griechisch'
 class RatingView(Screen):
     name_value = StringProperty()
     name_info = StringProperty()
+    names_remaining = StringProperty()
 
     gender_color = ListProperty((0.467, 0.286, 1, 0.75))
 
@@ -80,6 +81,7 @@ class RatingView(Screen):
                                                                 min_len,
                                                                 max_len,
                                                                 langs)
+        self.names_remaining = " %d weitere Namen mit aktuellem Filter" % (self.remaining_names)
 
         if self.current_name:
             self.name_value = self.current_name[0]
@@ -196,7 +198,7 @@ class SettingButtons(SettingItem):
         super(SettingItem, self).__init__(**kwargs)
 
         for aButton in kwargs["buttons"]:
-            oButton=Button(text=aButton['title'], font_size= '15sp')
+            oButton=Button(text=aButton['title'], font_size= '15sp', markup=True)
             oButton.ID=aButton['id']
             self.add_widget(oButton)
             oButton.bind (on_release=self.On_ButtonPressed)
@@ -205,17 +207,7 @@ class SettingButtons(SettingItem):
         # to do nothing here
         return
     def On_ButtonPressed(self,instance):
-        print instance.ID
-        if instance.ID == "button_clear_filter":
-            print "reset"
-            config = AndroidApp.get_running_app().config
-            config.setdefault("Filter", "gender", "Beide")
-            config.setdefault("Filter", "starts_with", "")
-            config.setdefault("Filter", "ends_with", "")
-            config.setdefault("Filter", "min_len", 1)
-            config.setdefault("Filter", "max_len", 20)
-            config.write()
-        elif instance.ID =="button_clear_cons":
+        if instance.ID =="button_clear_cons":
             print "delete"
             name_provider.delete_con_rating()
         self.panel.settings.dispatch('on_config_change',self.panel.config, self.section, self.key, instance.ID)
@@ -257,8 +249,7 @@ class AndroidApp(App):
                 {"type": "string", "title": "Ende", "desc": "Zeichen, mit denen die angezeigten Namen enden sollen", "section": "Filter", "key": "ends_with"},
                 {"type": "numeric", "title": "Minimale Länge", "desc": "Mindestlänge für die angezeigten Namen", "section": "Filter", "key": "min_len"},
                 {"type": "numeric", "title": "Maximale Länge", "desc": "Maximallänge für die angezeigten Namen", "section": "Filter", "key": "max_len"},
-                {"type": "buttons","title": "Alle Filter löschen","desc": "Alle Filtereinstellungen zurücksetzen","section": "Filter","key": "filter_buttons","buttons":[{"title":"Filter löschen","id":"button_clear_filter"}]},
-                {"type": "buttons","title": "Negative Bewerungen löschen","desc": "Alle negativen Bewertungen zurücksetzen, dadurch werden alle negativ bewerteten Namen wieder angezeigt.","section": "Filter","key": "filter_buttons","buttons":[{"title": "Zurücksetzen","id":"button_clear_cons"}]}
+                {"type": "buttons","title": "Negative Bewerungen löschen","desc": "Alle negativen Bewertungen zurücksetzen, dadurch werden alle negativ bewerteten Namen wieder angezeigt.","section": "Filter","key": "filter_buttons","buttons":[{"title": "Löschen","id":"button_clear_cons"}]}
             ]
         """
         )
