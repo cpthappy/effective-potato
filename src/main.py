@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-#
 __version__ = '0.1'
-__author__ = 'Georg Vogelhuber'
+__author__ = 'Johann-Georg Vogelhuber'
+__copyright__ = "Copyright 2016, Johann-Georg Vogelhuber"
+__email__ = "jgvogelhuber@gmail.com"
+__status__ = "Development"
 
 import kivy
 kivy.require('1.9.0')
@@ -262,5 +265,37 @@ class AndroidApp(App):
         settings.add_json_panel("Filter für Herkunft", self.config, data= "[%s]" % (','.join(lang_json)))
 
         settings.bind(on_config_change=self.update_after_config)
+
+    def show_about(self):
+        box = BoxLayout(orientation='vertical')
+        text = """
+        **Monikoo**
+
+        **Version** %s
+
+        Fehlt ein Name, ist eine Information fehlerhaft, oder gibt es
+        andere Verbesserungsvorschläge? Dann schreiben sie mir einfach
+        eine E-Mail oder kontaktieren mich über Twitter.
+        Ich freue mich über jede Rückmeldung.
+
+        **Kontakt**
+
+        %s\n
+        %s
+        """ % (__version__, __author__, __email__)
+        document = RstDocument(text=text, size_hint=(1.,0.9))
+        close_button = Button(text=u"Zurück",
+        markup=True, size_hint=(1., 0.1),
+        background_color=(0.467, 0.286, 1, 0.75))
+        box.add_widget(document)
+        box.add_widget(close_button)
+
+        popup = Popup(title="About",
+                    content=box,
+                    auto_dismiss = False,
+                    title_align = 'center',
+                    separator_color=(0.467, 0.286, 1, 0.75))
+        close_button.bind(on_press=popup.dismiss)
+        popup.open()
 
 AndroidApp().run()

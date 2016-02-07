@@ -16,7 +16,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.listview import ListItemButton, ListItemLabel
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.rst import RstDocument
-
+from kivy.uix.settings      import SettingItem
 from kivy.core.window import Window
 from kivy.utils import get_color_from_hex
 
@@ -48,6 +48,7 @@ u'Griechisch'
 class RatingView(Screen):
     name_value = StringProperty()
     name_info = StringProperty()
+    names_remaining = StringProperty()
 
     gender_color = ListProperty((0.467, 0.286, 1, 0.75))
 
@@ -80,6 +81,7 @@ class RatingView(Screen):
                                                                 min_len,
                                                                 max_len,
                                                                 langs)
+        self.names_remaining = " %d weitere Namen mit aktuellem Filter" % (self.remaining_names)
 
         if self.current_name:
             self.name_value = self.current_name[0]
@@ -190,6 +192,25 @@ class FavoritesView(Screen):
 class ScreenManagement(ScreenManager):
     pass
 
+class SettingButtons(SettingItem):
+    def __init__(self, **kwargs):
+        self.register_event_type('on_release')
+        super(SettingItem, self).__init__(**kwargs)
+
+        for aButton in kwargs["buttons"]:
+            oButton=Button(text=aButton['title'], font_size= '15sp', markup=True)
+            oButton.ID=aButton['id']
+            self.add_widget(oButton)
+            oButton.bind (on_release=self.On_ButtonPressed)
+    def set_value(self, section, key, value):
+        # set_value normally reads the configparser values and runs on an error
+        # to do nothing here
+        return
+    def On_ButtonPressed(self,instance):
+        if instance.ID =="button_clear_cons":
+            print "delete"
+            name_provider.delete_con_rating()
+        self.panel.settings.dispatch('on_config_change',self.panel.config, self.section, self.key, instance.ID)
 
 iconfonts.register('default_font', 'flaticon.ttf', 'flaticon.fontd')
 name_provider = NameProvider()
@@ -220,13 +241,15 @@ class AndroidApp(App):
         config.setdefaults('Sprache', {make_lang_key(l) :1 for l in LANGS})
 
     def build_settings(self, settings):
+        settings.register_type("buttons", SettingButtons)
         settings.add_json_panel("Filter Einstellungen", self.config, data = """
             [
                 {"type": "options", "title": "Geschlecht", "desc": "Auswahl des Geschlechts für die angezeigten Namen", "section": "Filter", "key": "gender", "options": ["Beide", "männlich", "weiblich"]},
                 {"type": "string", "title": "Anfang", "desc": "Zeichen, mit denen die angezeigten Namen beginnen sollen", "section": "Filter", "key": "starts_with"},
                 {"type": "string", "title": "Ende", "desc": "Zeichen, mit denen die angezeigten Namen enden sollen", "section": "Filter", "key": "ends_with"},
                 {"type": "numeric", "title": "Minimale Länge", "desc": "Mindestlänge für die angezeigten Namen", "section": "Filter", "key": "min_len"},
-                {"type": "numeric", "title": "Maximale Länge", "desc": "Maximallänge für die angezeigten Namen", "section": "Filter", "key": "max_len"}
+                {"type": "numeric", "title": "Maximale Länge", "desc": "Maximallänge für die angezeigten Namen", "section": "Filter", "key": "max_len"},
+                {"type": "buttons","title": "Negative Bewerungen löschen","desc": "Alle negativen Bewertungen zurücksetzen, dadurch werden alle negativ bewerteten Namen wieder angezeigt.","section": "Filter","key": "filter_buttons","buttons":[{"title": "Löschen","id":"button_clear_cons"}]}
             ]
         """
         )

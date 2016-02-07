@@ -58,6 +58,8 @@ class NameProvider(object):
     def get_favorites(self):
         return sorted(self.name_store.get_favorites())
 
+    def delete_con_rating(self):
+        self.name_store.delete_con_rating()
 
 if __name__ == '__main__':
     name_prov = NameProvider()

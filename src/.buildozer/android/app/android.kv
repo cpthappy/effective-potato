@@ -63,7 +63,6 @@
 
 <RatingView>:
     name:  'rating'
-    on_enter: self.update_current_name()
     BoxLayout:
         orientation: 'vertical'
         spacing: 1
@@ -75,14 +74,22 @@
             markup: True
             font_size: '50sp'
             color: root.gender_color
-            background_color: [1,0,0,1]
+            background_color: [1,1,1,1]
             size_hint: (1., 0.1)
-
         RstDocument:
             id: 'info'
             text: root.name_info
             size_hint: (1., 0.3)
             background_color: (1,1,1,1)
+        Label:
+            id: 'remaining'
+            text: root.names_remaining
+            font_size: '15sp'
+            background_color: [1,1,1,1]
+            size_hint: (1., 0.025)
+            color: (0.467, 0.286, 1, 0.75)
+            # halign: 'left'
+            #text_size: self.size
 
             # (0.847, 0.235, 1, 0.75)
             # (0.58, 0.216, 0.91, 0.75)
