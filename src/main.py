@@ -27,24 +27,25 @@ from kivy.garden import iconfonts
 
 from NameProvider import NameProvider, make_lang_key
 
+
 LANGS = [u'Friesisch',
-u'Lateinisch',
-u'Etruskisch',
-u'Französisch',
-u'Italienisch',
-u'Englisch',
-u'Irisch',
-u'Hebräisch',
-u'Keltisch',
-u'Persisch',
-u'Arabisch',
-u'Unbekannt',
-u'Nordisch',
-u'Deutsch',
-u'Walisisch',
-u'Slawisch',
-u'Griechisch'
-]
+            u'Lateinisch',
+            u'Etruskisch',
+            u'Französisch',
+            u'Italienisch',
+            u'Englisch',
+            u'Irisch',
+            u'Hebräisch',
+            u'Keltisch',
+            u'Persisch',
+            u'Arabisch',
+            u'Unbekannt',
+            u'Nordisch',
+            u'Deutsch',
+            u'Walisisch',
+            u'Slawisch',
+            u'Griechisch'
+            ]
 
 
 
@@ -164,9 +165,7 @@ class FavoritesView(Screen):
         return {'text': an_obj[0],
                  'size_hint_y': None,
                  'height': 60,
-                 'cls_dicts': [
-
-                                {'cls': ListItemButton,
+                 'cls_dicts': [{'cls': ListItemButton,
                                 'kwargs': {'text': an_obj[0],
                                             'color' : box_color,
                                             'font_size': '30sp',

@@ -12,12 +12,9 @@ class NameStore(object):
         return None
 
     def get_unrated_entries(self):
-        unrated = []
-
         for name, data in self.store.find():
             if not "rating" in data.keys():
-                unrated.append((name, data))
-        return unrated
+                yield (name, data)
 
     def get_favorites(self):
         favs = []
