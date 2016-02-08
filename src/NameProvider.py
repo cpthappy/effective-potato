@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-#
-from NameStore import NameStore
+from kivy.storage.jsonstore import JsonStore
 import random
 import string
 
@@ -10,7 +10,10 @@ class NameProvider(object):
     update_callback = None
 
     def __init__(self):
-        self.name_store = NameStore()
+        self.name_store = JsonStore("names.json")
+        self.rating_store = JsonStore("ratings.json")
+        self.current_query = None
+        self.cache = None
 
     def get_rst(self, name, name_data):
         text = "**Sprache**\n\n  %s\n\n" % name_data["language"]
@@ -27,39 +30,60 @@ class NameProvider(object):
         return text
 
     def get_by_name(self, name):
-        return self.name_store.get_entry_by_name(name)
+        try:
+            return name, self.name_store.get(name)
+        except KeyError:
+            pass
+        return None
+
+    def _update_cache(self, gender, starts_with, ends_with, min_len, max_len, langs):
+        self.cache = []
+
+        for name, data in self.name_store.find():
+            try:
+                length = len(name)
+                if length < int(min_len) or length > int(max_len):
+                    continue
+                if langs[make_lang_key(data["language"])]!=u'1':
+                    continue
+                if gender[0] in ("m", "w") and not data["gender"].startswith(gender[0]):
+                    continue
+                if starts_with != "" and not name.lower().startswith(starts_with):
+                    continue
+                if ends_with != "" and not name.lower().endswith(ends_with):
+                    continue
+                if self.rating_store.exists(name):
+                    continue
+                self.cache.append(name)
+            except TypeError:
+                pass
 
     def get_next_unrated_name(self, gender, starts_with, ends_with, min_len, max_len, langs):
-        try:
-            name_data = [x for x in self.name_store.get_unrated_entries() if langs[make_lang_key(x[1]["language"])]==u'1']
-            name_data = [x for x in name_data if len(x[0]) >= int(min_len) and len(x[0]) <= int(max_len)]
+        query = (gender, starts_with, ends_with, min_len, max_len, langs)
 
-            if gender.startswith("m"):
-                name_data = [x for x in name_data if x[1]["gender"].startswith("m")]
-            elif gender.startswith("w"):
-                name_data = [x for x in name_data if x[1]["gender"].startswith("w")]
+        if cmp(query, self.current_query) != 0:
+            self._update_cache(*query)
+            self.current_query = query
 
-            if starts_with != "":
-                name_data = [x for x in name_data if x[0].lower().startswith(starts_with)]
+        if self.cache:
+            next_name = random.choice(self.cache)
+            self.cache.remove(next_name)
 
-            if ends_with != "":
-                name_data = [x for x in name_data if x[0].lower().endswith(ends_with)]
-        except TypeError:
-            return None, 0
+            return (next_name, self.get_by_name(next_name)), len(self.cache)
 
-        if not name_data:
-            return None, 0
-
-        return random.choice(name_data), len(name_data)
+        return None, 0
 
     def rate(self, current_name, rating):
-        self.name_store.set_rating(current_name, rating)
+        self.rating_store.put(current_name[0], gender=current_name[1]["gender"], rating=rating)
 
     def get_favorites(self):
-        return sorted(self.name_store.get_favorites())
+        return sorted([(x, y["gender"]) for x,y in self.rating_store.find(rating=1)])
 
     def delete_con_rating(self):
-        self.name_store.delete_con_rating()
+        cons = [x for x, _ in self.rating_store.find(rating=0)]
+
+        for name in cons:
+            self.rating_store.remove(name)
 
 if __name__ == '__main__':
     name_prov = NameProvider()
