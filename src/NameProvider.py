@@ -67,14 +67,17 @@ class NameProvider(object):
 
         if self.cache:
             next_name = random.choice(self.cache)
-            self.cache.remove(next_name)
 
-            return (next_name, self.get_by_name(next_name)), len(self.cache)
+            return self.get_by_name(next_name), len(self.cache)
 
         return None, 0
 
     def rate(self, current_name, rating):
+        self.cache.remove(current_name[0])
         self.rating_store.put(current_name[0], gender=current_name[1]["gender"], rating=rating)
+
+    def change_rating(self, name, gender, rating):
+        self.rating_store.put(name, gender=gender, rating=rating)
 
     def get_favorites(self):
         return sorted([(x, y["gender"]) for x,y in self.rating_store.find(rating=1)])
@@ -83,7 +86,9 @@ class NameProvider(object):
         cons = [x for x, _ in self.rating_store.find(rating=0)]
 
         for name in cons:
-            self.rating_store.remove(name)
+            self.rating_store.delete(name)
+
+        self._update_cache(*self.current_query)
 
 if __name__ == '__main__':
     name_prov = NameProvider()

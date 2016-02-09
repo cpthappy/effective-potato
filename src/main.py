@@ -127,8 +127,7 @@ class FavoritesView(Screen):
 
     def remove(self, an_obj):
         current_name = name_provider.get_by_name(an_obj.id)
-        del current_name[1]['rating']
-        name_provider.rate(current_name, 0)
+        name_provider.change_rating(current_name[0], current_name[1]["gender"], 0)
         self.update()
 
     def info(sefl, an_obj):
@@ -158,7 +157,7 @@ class FavoritesView(Screen):
         popup.open()
 
     def args_converter(self, row_index, an_obj):
-        if an_obj[1]["gender"].startswith("m"):
+        if an_obj[1].startswith("m"):
             box_color = (0.235, 0.451, 1, 0.75)
         else:
             box_color = (0.847, 0.235, 1, 0.75)

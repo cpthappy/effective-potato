@@ -4,3 +4,5 @@ license.txt
 .buildozer/*
 res/web-application-ui/*
 res/sparrow.svg
+ratings.json
+*.pyc
