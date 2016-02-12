@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-#
 from kivy.storage.jsonstore import JsonStore
-import random
 import string
 
 make_lang_key = lambda s : filter(lambda x: x in string.printable, s)
@@ -10,8 +9,8 @@ class NameProvider(object):
     update_callback = None
 
     def __init__(self):
-        self.name_store = JsonStore("names.json")
-        self.rating_store = JsonStore("ratings.json")
+        self.name_store = None
+        self.rating_store = None
         self.current_query = None
         self.cache = None
         self.index = 0
@@ -31,6 +30,8 @@ class NameProvider(object):
         return text
 
     def get_by_name(self, name):
+        if not self.name_store:
+            self.name_store = JsonStore("names.json")
         try:
             return name, self.name_store.get(name)
         except KeyError:
@@ -41,6 +42,9 @@ class NameProvider(object):
         self.cache = []
         self.index = 0
 
+        if not self.rating_store:
+            self.rating_store = JsonStore("ratings.json")
+
         add_to_cache = self.cache.append
 
         gender_letter = gender[0]
@@ -48,6 +52,11 @@ class NameProvider(object):
         rating_store_exists = self.rating_store.exists
         min_len = int(min_len)
         max_len = int(max_len)
+
+        if not self.name_store:
+            self.name_store = JsonStore("names.json")
+        if not self.rating_store:
+            self.rating_store = JsonStore("ratings.json")
 
         for name, data in self.name_store.find():
             try:
@@ -88,16 +97,24 @@ class NameProvider(object):
         return None, 0
 
     def rate(self, current_name, rating):
+        if not self.rating_store:
+            self.rating_store = JsonStore("ratings.json")
         self.cache.remove(current_name[0])
         self.rating_store.put(current_name[0], gender=current_name[1]["gender"], rating=rating)
 
     def change_rating(self, name, gender, rating):
+        if not self.rating_store:
+            self.rating_store = JsonStore("ratings.json")
         self.rating_store.put(name, gender=gender, rating=rating)
 
     def get_favorites(self):
+        if not self.rating_store:
+            self.rating_store = JsonStore("ratings.json")
         return sorted([(x, y["gender"]) for x,y in self.rating_store.find(rating=1)])
 
     def delete_con_rating(self):
+        if not self.rating_store:
+            self.rating_store = JsonStore("ratings.json")
         cons = [x for x, _ in self.rating_store.find(rating=0)]
 
         for name in cons:
