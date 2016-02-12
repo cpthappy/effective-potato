@@ -14,6 +14,7 @@ class NameProvider(object):
         self.rating_store = JsonStore("ratings.json")
         self.current_query = None
         self.cache = None
+        self.index = 0
 
     def get_rst(self, name, name_data):
         text = "**Sprache**\n\n  %s\n\n" % name_data["language"]
@@ -38,25 +39,38 @@ class NameProvider(object):
 
     def _update_cache(self, gender, starts_with, ends_with, min_len, max_len, langs):
         self.cache = []
+        self.index = 0
+
+        add_to_cache = self.cache.append
+
+        gender_letter = gender[0]
+        has_gender = gender_letter in ("m", "w")
+        rating_store_exists = self.rating_store.exists
+        min_len = int(min_len)
+        max_len = int(max_len)
 
         for name, data in self.name_store.find():
             try:
-                length = len(name)
-                if length < int(min_len) or length > int(max_len):
+                if has_gender and not data["gender"].startswith(gender_letter):
+                    continue
+                if data["length"] < min_len or data["length"] > max_len:
+                    continue
+                if rating_store_exists(name):
                     continue
                 if langs[make_lang_key(data["language"])]!=u'1':
                     continue
-                if gender[0] in ("m", "w") and not data["gender"].startswith(gender[0]):
+                name_lc = name.lower()
+                if starts_with != "" and not name_lc.startswith(starts_with):
                     continue
-                if starts_with != "" and not name.lower().startswith(starts_with):
+                if ends_with != "" and not name_lc.endswith(ends_with):
                     continue
-                if ends_with != "" and not name.lower().endswith(ends_with):
-                    continue
-                if self.rating_store.exists(name):
-                    continue
-                self.cache.append(name)
+
+                add_to_cache(name)
+
             except TypeError:
                 pass
+            except KeyError:
+                print name, data
 
     def get_next_unrated_name(self, gender, starts_with, ends_with, min_len, max_len, langs):
         query = (gender, starts_with, ends_with, min_len, max_len, langs)
@@ -66,8 +80,9 @@ class NameProvider(object):
             self.current_query = query
 
         if self.cache:
-            next_name = random.choice(self.cache)
-
+            #next_name = random.choice(self.cache)
+            next_name = self.cache[self.index]
+            self.index = (self.index + 1) % len(self.cache)
             return self.get_by_name(next_name), len(self.cache)
 
         return None, 0

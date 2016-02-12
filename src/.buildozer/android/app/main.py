@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-#
 __version__ = '0.1'
-__author__ = 'Georg Vogelhuber'
+__author__ = 'Johann-Georg Vogelhuber'
+__copyright__ = "Copyright 2016, Johann-Georg Vogelhuber"
+__email__ = "jgvogelhuber@gmail.com"
+__status__ = "Development"
 
 import kivy
 kivy.require('1.9.0')
@@ -24,24 +27,25 @@ from kivy.garden import iconfonts
 
 from NameProvider import NameProvider, make_lang_key
 
+
 LANGS = [u'Friesisch',
-u'Lateinisch',
-u'Etruskisch',
-u'Französisch',
-u'Italienisch',
-u'Englisch',
-u'Irisch',
-u'Hebräisch',
-u'Keltisch',
-u'Persisch',
-u'Arabisch',
-u'Unbekannt',
-u'Nordisch',
-u'Deutsch',
-u'Walisisch',
-u'Slawisch',
-u'Griechisch'
-]
+            u'Lateinisch',
+            u'Etruskisch',
+            u'Französisch',
+            u'Italienisch',
+            u'Englisch',
+            u'Irisch',
+            u'Hebräisch',
+            u'Keltisch',
+            u'Persisch',
+            u'Arabisch',
+            u'Unbekannt',
+            u'Nordisch',
+            u'Deutsch',
+            u'Walisisch',
+            u'Slawisch',
+            u'Griechisch'
+            ]
 
 
 
@@ -123,8 +127,7 @@ class FavoritesView(Screen):
 
     def remove(self, an_obj):
         current_name = name_provider.get_by_name(an_obj.id)
-        del current_name[1]['rating']
-        name_provider.rate(current_name, 0)
+        name_provider.change_rating(current_name[0], current_name[1]["gender"], 0)
         self.update()
 
     def info(sefl, an_obj):
@@ -154,16 +157,14 @@ class FavoritesView(Screen):
         popup.open()
 
     def args_converter(self, row_index, an_obj):
-        if an_obj[1]["gender"].startswith("m"):
+        if an_obj[1].startswith("m"):
             box_color = (0.235, 0.451, 1, 0.75)
         else:
             box_color = (0.847, 0.235, 1, 0.75)
         return {'text': an_obj[0],
                  'size_hint_y': None,
                  'height': 60,
-                 'cls_dicts': [
-
-                                {'cls': ListItemButton,
+                 'cls_dicts': [{'cls': ListItemButton,
                                 'kwargs': {'text': an_obj[0],
                                             'color' : box_color,
                                             'font_size': '30sp',
@@ -262,5 +263,37 @@ class AndroidApp(App):
         settings.add_json_panel("Filter für Herkunft", self.config, data= "[%s]" % (','.join(lang_json)))
 
         settings.bind(on_config_change=self.update_after_config)
+
+    def show_about(self):
+        box = BoxLayout(orientation='vertical')
+        text = """
+        **Monikoo**
+
+        **Version** %s
+
+        Fehlt ein Name, ist eine Information fehlerhaft, oder gibt es
+        andere Verbesserungsvorschläge? Dann schreiben sie mir einfach
+        eine E-Mail oder kontaktieren mich über Twitter.
+        Ich freue mich über jede Rückmeldung.
+
+        **Kontakt**
+
+        %s\n
+        %s
+        """ % (__version__, __author__, __email__)
+        document = RstDocument(text=text, size_hint=(1.,0.9))
+        close_button = Button(text=u"Zurück",
+        markup=True, size_hint=(1., 0.1),
+        background_color=(0.467, 0.286, 1, 0.75))
+        box.add_widget(document)
+        box.add_widget(close_button)
+
+        popup = Popup(title="About",
+                    content=box,
+                    auto_dismiss = False,
+                    title_align = 'center',
+                    separator_color=(0.467, 0.286, 1, 0.75))
+        close_button.bind(on_press=popup.dismiss)
+        popup.open()
 
 AndroidApp().run()
