@@ -37,6 +37,7 @@ for entry in detailed:
             tmp_var.append(v)
 
     language = format_lang(entry[-1])
+    length = len(entry[0].decode("utf-8"))
     names.append((entry[0], language))
     store.put(entry[0],
                 gender=entry[2],
@@ -44,7 +45,8 @@ for entry in detailed:
                 variants = tmp_var,
                 words=entry[-2],
                 origin=entry[1],
-                meaning=entry[3])
+                meaning=entry[3],
+                length=length)
 
     langs[language] += 1
 
