@@ -47,7 +47,23 @@ LANGS = [u'Friesisch',
             u'Griechisch'
             ]
 
+class ReactiveButton(Button):
+    last_color = ListProperty()
 
+    def toggle_color(self):
+        if self.last_color:
+            self.color = self.last_color
+            self.last_color = []
+        else:
+            self.last_color = self.color
+            self.color = (1, 1, 1, 0.5)
+    def _do_press(self):
+        self.state = 'down'
+        self.toggle_color()
+
+    def _do_release(self, *args):
+        self.state = 'normal'
+        self.toggle_color()
 
 class RatingView(Screen):
     name_value = StringProperty()
@@ -180,7 +196,6 @@ class FavoritesView(Screen):
                                  'deselected_color': [1,1,1,1],
                                  'color': (1, 0.678, 0.384, 0.75),
                                  'background_normal': "",
-                                 #'background_down': "",
                                  'markup':True,
                                  'id': an_obj[0],
                                  'size_hint_x': 0.25,
@@ -209,7 +224,6 @@ class SettingButtons(SettingItem):
         return
     def On_ButtonPressed(self,instance):
         if instance.ID =="button_clear_cons":
-            print "delete"
             name_provider.delete_con_rating()
         self.panel.settings.dispatch('on_config_change',self.panel.config, self.section, self.key, instance.ID)
 

@@ -79,7 +79,7 @@ class NameProvider(object):
             except TypeError:
                 pass
             except KeyError:
-                print name, data
+                pass
 
     def get_next_unrated_name(self, gender, starts_with, ends_with, min_len, max_len, langs):
         query = (gender, starts_with, ends_with, min_len, max_len, langs)

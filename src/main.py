@@ -233,7 +233,7 @@ Window.clearcolor = get_color_from_hex('#ffffff')
 presentation = Builder.load_file("android.kv")
 
 class AndroidApp(App):
-    icon = "res/sparrow.png"
+    icon = "res/logo.png"
     use_kivy_settings  =  False
 
     def build(self):

@@ -46,7 +46,7 @@ garden_requirements = iconfonts
 presplash.filename = %(source.dir)s/res/presplash.png
 
 # (str) Icon of the application
-icon.filename = %(source.dir)s/res/sparrow.png
+icon.filename = %(source.dir)s/res/logo.png
 
 # (str) Supported orientation (one of landscape, portrait or all)
 orientation = portrait

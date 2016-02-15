@@ -59,7 +59,7 @@
         MenuBar:
         Label:
             text: 'Favoriten'
-            font_size: '40sp'
+            font_size: '40dp'
             size_hint: (1., 0.1)
             color: (0.467, 0.286, 1, 0.75)
         ListView:
@@ -72,6 +72,12 @@
                 selection_mode='none',
                 cls=CompositeListItem)
 
+<ReactiveButton>:
+    background_color: [1,1,1,1]
+    background_normal: ""
+    background_down: ""
+    markup: True # Always turn markup on
+
 <RatingView>:
     name:  'rating'
     BoxLayout:
@@ -83,7 +89,7 @@
             id: 'name'
             text: root.name_value
             markup: True
-            font_size: '50sp'
+            font_size: '50dp'
             color: root.gender_color
             background_color: [1,1,1,1]
             size_hint: (1., 0.1)
@@ -95,50 +101,28 @@
         Label:
             id: 'remaining'
             text: root.names_remaining
-            font_size: '15sp'
+            font_size: '15dp'
             background_color: [1,1,1,1]
             size_hint: (1., 0.025)
             color: (0.467, 0.286, 1, 0.75)
-            # halign: 'left'
-            #text_size: self.size
-
-            # (0.847, 0.235, 1, 0.75)
-            # (0.58, 0.216, 0.91, 0.75)
-            # (0.467, 0.286, 1, 0.75)
-            # (0.216, 0.227, 0.91, 0.75)
-            # (0.235, 0.451, 1, 0.75)
 
         BoxLayout:
             size_hint: (1., 0.1)
             spacing: 10
-            Button:
+            ReactiveButton:
                 on_press: root.rate_pro()
-                background_color: [1,1,1,1]
-                background_normal: ""
-                background_down: ""
-                color: (0.149, 0.8, 0.196, 0.75)
                 font_size: '60dp'
-                markup: True # Always turn markup on
+                color: (0.149, 0.8, 0.196, 0.75)
                 text: "%s"%(icon('flaticon-round69'))
-
-            Button:
+            ReactiveButton:
                 on_press: root.update_current_name()
-                background_color: [1,1,1,1]
-                background_normal: ""
-                background_down: ""
                 color: (0.467, 0.286, 1, 0.75)
                 font_size: '60dp'
-                markup: True # Always turn markup on
                 text: "%s"%(icon('flaticon-refresh61'))
-
-            Button:
+            ReactiveButton:
                 on_press: root.rate_con()
-                background_color: [1,1,1,1]
                 color: (1, 0.678, 0.384, 0.75)
                 font_size: '60dp'
-                background_normal: ""
-                background_down: ""
-                markup: True # Always turn markup on
                 text: "%s"%(icon('flaticon-rounded61'))
 
 ScreenManagement:
