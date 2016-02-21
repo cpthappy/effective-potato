@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-#
-__version__ = '0.1'
+__version__ = '0.2'
 __author__ = 'Johann-Georg Vogelhuber'
 __copyright__ = "Copyright 2016, Johann-Georg Vogelhuber"
 __email__ = "jgvogelhuber@gmail.com"
