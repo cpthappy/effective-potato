@@ -22,6 +22,7 @@ from kivy.uix.rst import RstDocument
 from kivy.uix.settings      import SettingItem
 from kivy.core.window import Window
 from kivy.utils import get_color_from_hex
+from kivy.utils import platform
 
 from kivy.garden import iconfonts
 
@@ -206,7 +207,23 @@ class FavoritesView(Screen):
 
 
 class ScreenManagement(ScreenManager):
-    pass
+    def __init__(self, **kwargs):
+        self.history = []
+        super(ScreenManager, self).__init__(**kwargs)
+
+    def screen_change(self, *args):
+        if (args[0] != self.current):
+            self.history.append(self.current)
+            self.current = args[0]
+
+    def go_back(self):
+        print self.history
+        if self.history:
+            self.current = self.history[-1]
+            del self.history[-1]
+            return False
+        else:
+            return True
 
 class SettingButtons(SettingItem):
     def __init__(self, **kwargs):
@@ -239,10 +256,19 @@ class AndroidApp(App):
     def build(self):
         self.mainwidget = presentation
         self.update_after_config()
+        self.bind(on_start=self.post_build_init)
         return self.mainwidget
 
     def on_pause(self):
         return True
+
+    def post_build_init(self, *args):
+        if platform() == 'android':
+            import android
+            android.map_key(android.KEYCODE_BACK, 1001)
+
+        win = Window
+        win.bind(on_keyboard=self.my_key_handler)
 
     def update_after_config(self, *args, **kwargs):
         self.mainwidget.get_screen('rating').update_current_name()
@@ -309,5 +335,15 @@ class AndroidApp(App):
                     separator_color=(0.467, 0.286, 1, 0.75))
         close_button.bind(on_press=popup.dismiss)
         popup.open()
+
+    def my_key_handler(self, window, keycode1, keycode2, text, modifiers):
+        if keycode1 in [27, 1001]:
+            self.go_back()
+            return True
+        return False
+
+    def go_back(self):
+        if self.mainwidget.go_back():
+            self.stop()
 
 AndroidApp().run()
