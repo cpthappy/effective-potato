@@ -244,6 +244,11 @@ class SettingButtons(SettingItem):
             name_provider.delete_con_rating()
         self.panel.settings.dispatch('on_config_change',self.panel.config, self.section, self.key, instance.ID)
 
+class BackPopup(Popup):
+    def go_back(self, *args):
+        self.dismiss()
+        App.get_running_app().go_back = App.get_running_app().go_back_default
+
 iconfonts.register('default_font', 'flaticon.ttf', 'flaticon.fontd')
 name_provider = NameProvider()
 Window.clearcolor = get_color_from_hex('#ffffff')
@@ -255,8 +260,11 @@ class AndroidApp(App):
 
     def build(self):
         self.mainwidget = presentation
+        self.go_back = self.go_back_default
+
         self.update_after_config()
         self.bind(on_start=self.post_build_init)
+
         return self.mainwidget
 
     def on_pause(self):
@@ -328,12 +336,13 @@ class AndroidApp(App):
         box.add_widget(document)
         box.add_widget(close_button)
 
-        popup = Popup(title="About",
+        popup = BackPopup(title="About",
                     content=box,
                     auto_dismiss = False,
                     title_align = 'center',
                     separator_color=(0.467, 0.286, 1, 0.75))
         close_button.bind(on_press=popup.dismiss)
+        self.go_back = popup.go_back
         popup.open()
 
     def my_key_handler(self, window, keycode1, keycode2, text, modifiers):
@@ -342,7 +351,7 @@ class AndroidApp(App):
             return True
         return False
 
-    def go_back(self):
+    def go_back_default(self):
         if self.mainwidget.go_back():
             self.stop()
 
