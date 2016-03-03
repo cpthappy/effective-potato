@@ -32,12 +32,12 @@
             markup: True # Always turn markup on
             text: "%s"%(icon('flaticon-eye105'))
             font_size: '25dp'
-            on_release:  app.root.current = 'rating'
+            on_release:  app.root.screen_change('rating')
         ActionButton:
             markup: True # Always turn markup on
             text: "%s"%(icon('flaticon-heart296'))
             font_size: '25dp'
-            on_release:  app.root.current = 'favs'
+            on_release:  app.root.screen_change('favs')
         ActionButton:
             markup: True # Always turn markup on
             text: "%s"%(icon('flaticon-settings51'))

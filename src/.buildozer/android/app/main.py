@@ -22,6 +22,7 @@ from kivy.uix.rst import RstDocument
 from kivy.uix.settings      import SettingItem
 from kivy.core.window import Window
 from kivy.utils import get_color_from_hex
+from kivy.utils import platform
 
 from kivy.garden import iconfonts
 
@@ -206,7 +207,23 @@ class FavoritesView(Screen):
 
 
 class ScreenManagement(ScreenManager):
-    pass
+    def __init__(self, **kwargs):
+        self.history = []
+        super(ScreenManager, self).__init__(**kwargs)
+
+    def screen_change(self, *args):
+        if (args[0] != self.current):
+            self.history.append(self.current)
+            self.current = args[0]
+
+    def go_back(self):
+        print self.history
+        if self.history:
+            self.current = self.history[-1]
+            del self.history[-1]
+            return False
+        else:
+            return True
 
 class SettingButtons(SettingItem):
     def __init__(self, **kwargs):
@@ -227,6 +244,11 @@ class SettingButtons(SettingItem):
             name_provider.delete_con_rating()
         self.panel.settings.dispatch('on_config_change',self.panel.config, self.section, self.key, instance.ID)
 
+class BackPopup(Popup):
+    def go_back(self, *args):
+        self.dismiss()
+        App.get_running_app().go_back = App.get_running_app().go_back_default
+
 iconfonts.register('default_font', 'flaticon.ttf', 'flaticon.fontd')
 name_provider = NameProvider()
 Window.clearcolor = get_color_from_hex('#ffffff')
@@ -238,11 +260,23 @@ class AndroidApp(App):
 
     def build(self):
         self.mainwidget = presentation
+        self.go_back = self.go_back_default
+
         self.update_after_config()
+        self.bind(on_start=self.post_build_init)
+
         return self.mainwidget
 
     def on_pause(self):
         return True
+
+    def post_build_init(self, *args):
+        if platform() == 'android':
+            import android
+            android.map_key(android.KEYCODE_BACK, 1001)
+
+        win = Window
+        win.bind(on_keyboard=self.my_key_handler)
 
     def update_after_config(self, *args, **kwargs):
         self.mainwidget.get_screen('rating').update_current_name()
@@ -302,12 +336,23 @@ class AndroidApp(App):
         box.add_widget(document)
         box.add_widget(close_button)
 
-        popup = Popup(title="About",
+        popup = BackPopup(title="About",
                     content=box,
                     auto_dismiss = False,
                     title_align = 'center',
                     separator_color=(0.467, 0.286, 1, 0.75))
         close_button.bind(on_press=popup.dismiss)
+        self.go_back = popup.go_back
         popup.open()
+
+    def my_key_handler(self, window, keycode1, keycode2, text, modifiers):
+        if keycode1 in [27, 1001]:
+            self.go_back()
+            return True
+        return False
+
+    def go_back_default(self):
+        if self.mainwidget.go_back():
+            self.stop()
 
 AndroidApp().run()
